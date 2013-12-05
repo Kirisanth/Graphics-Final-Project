@@ -10,7 +10,6 @@
 #include <GLUT/glut.h>
 #include "MathLibrary.h"
 #include "Particle.h"
-#include "ray.h"
 #include <math.h>
 
 
@@ -26,7 +25,7 @@ bool frictionOnOff = false;//turn friction on and off
 bool wind = false;//turn wind on and off
 bool rainMode = false, snowMode = false, normalMode = true;//allocating modes for desired effects
 double camera[3] = {9,9,9};//declares camera at position
-ray newRay;
+//ray newRay;
 GLdouble newPoint [3];//creates new point
 GLdouble pNear[3];//depth for z
 GLdouble pFar[3]; //depth for z

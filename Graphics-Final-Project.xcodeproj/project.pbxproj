@@ -40,8 +40,6 @@
 		3C35198A184AA36000F6C6A2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		6C871880184EDEAE006FFFF4 /* Physics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Physics.cpp; sourceTree = "<group>"; };
 		6C871881184EDEAE006FFFF4 /* Physics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Physics.h; sourceTree = "<group>"; };
-		6C871883184F1B64006FFFF4 /* ray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ray.cpp; sourceTree = "<group>"; };
-		6C871884184F1B64006FFFF4 /* ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +66,6 @@
 				3C351985184A919200F6C6A2 /* Particle.cpp */,
 				6C871880184EDEAE006FFFF4 /* Physics.cpp */,
 				6C871881184EDEAE006FFFF4 /* Physics.h */,
-				6C871883184F1B64006FFFF4 /* ray.cpp */,
-				6C871884184F1B64006FFFF4 /* ray.h */,
 				3C351979184A8CBC00F6C6A2 /* main.cpp */,
 				3C351978184A8CBC00F6C6A2 /* Graphics-Final-Project */,
 				3C351977184A8CBC00F6C6A2 /* Products */,
@@ -146,8 +142,6 @@
 				3C35197A184A8CBC00F6C6A2 /* main.cpp in Sources */,
 				3C351987184A919200F6C6A2 /* Particle.cpp in Sources */,
 				3C351984184A912700F6C6A2 /* MathLibrary.cpp in Sources */,
-				6C871882184EDEAE006FFFF4 /* Physics.cpp in Sources */,
-				6C871885184F1B64006FFFF4 /* ray.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
