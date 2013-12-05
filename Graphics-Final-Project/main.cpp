@@ -10,6 +10,7 @@
 #include <GLUT/glut.h>
 #include "MathLibrary.h"
 #include "Particle.h"
+#include "ray.h"
 #include <math.h>
 
 
@@ -24,53 +25,122 @@ bool startStop = true;//start stop animation
 bool frictionOnOff = false;//turn friction on and off
 bool wind = false;//turn wind on and off
 bool rainMode = false, snowMode = false, normalMode = true;//allocating modes for desired effects
+double camera[3] = {9,9,9};//declares camera at position
+ray newRay;
+GLdouble newPoint [3];//creates new point
+GLdouble pNear[3];//depth for z
+GLdouble pFar[3]; //depth for z
+float objectPos[3];//stores object position
+float inter[3];//stores object intersection
+bool groundPlane = true;//check if hit on plane
+double platformNormal[4][3] ={{0,1,0}};
 
 
-/*
- Used to draw the cannon resposible for shooting out the particles
- */
-void drawCanon(){
+
+
+void Get3DPos(int x, int y, float winz, GLdouble point[3])
+{
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	
+	//get the matrices
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetIntegerv( GL_VIEWPORT, viewport );
     
-    glBegin(GL_QUADS);
-    
-    //platform
-    glColor3f(1, 0.3, 1);
-    glVertex3f(-0.6,0.5,0.6);
-    glVertex3f(0.6,0.5,0.6);
-    glVertex3f(0.6,0.5,-0.6);
-    glVertex3f(-0.6,0.5,-0.6);
-    
-    //front
-  	glColor3f(1, 1, 1);
-    glVertex3f(-0.6, 0, 0.6);
-    glVertex3f(0.6, 0, 0.6);
-    glVertex3f(0.6, 0.5, 0.6);
-    glVertex3f(-0.6, 0.5, 0.6);
-    
-    //left side
-    glColor3f(1, 1, 1);
-    glVertex3f(-0.6,0.5,0.6);
-    glVertex3f(-0.6,0,0.6);
-    glVertex3f(-0.6,0,-0.6);
-    glVertex3f(-0.6,0.5,-0.6);
-    
-    //right side
-    glColor3f(1, 1, 1);
-    glVertex3f(0.6,0.5,0.6);
-    glVertex3f(0.6,0,0.6);
-    glVertex3f(0.6,0,-0.6);
-    glVertex3f(0.6,0.5,-0.6);
-    
-    //back side
-    glColor3f(1, 1, 1);
-    glVertex3f(-0.6,0.5,-0.6);
-    glVertex3f(-0.6,0,-0.6);
-    glVertex3f(0.6,0,-0.6);
-    glVertex3f(0.6,0.5,-0.6);
-    
-	glEnd();
+	//"un-project" the 2D point giving the 3D position corresponding to the provided depth (winz)
+	gluUnProject( (float)x, (float)(viewport[3]-y), winz, modelview, projection, viewport, &point[0], &point[1], &point[2]);
     
 }
+
+
+
+////Function performs a ray plan test to check if ray intersected object other then sphere
+//bool rayPlaneTest(int i){
+//    float t = 0;
+//    //newRay.normalMultiplyDirection(i);
+//    t = (objectPlaneNormal[i][0] *  norm[0] + objectPlaneNormal[i][1] * norm[1] + objectPlaneNormal[i][2] * norm[2]);
+//    if (t != 0){
+//        t = newRay.normalMultiplyOrgin(i, t);
+//        //store instesection points if it did
+//        inter[0] = newRay.org[0] + t*newRay.norm[0];
+//        inter[1] = newRay.org[1] + t*newRay.norm[1];
+//        inter[2] = newRay.org[2] + t*newRay.norm[2];
+//        return true;
+//    }
+//    else {
+//        return false;
+//    }
+//    
+//}
+
+//
+///* rayCast - takes a mouse x,y, coordinate, and casts a ray through that point
+// *   for subsequent intersection tests with objects.
+// */
+//void rayCast(float x, float y)
+//{
+//    //count through number of objects to perform tests on each one
+//        //count through number of planes of each object to perform test on each one
+//        for (int i = 0; i < 4; i++){
+//            
+//            
+//            Get3DPos(x, y, 0.0, pNear);
+//            Get3DPos(x, y, 1.0, pFar);
+//            
+//            //store ray orgin
+//            newRay.org[0] = camera[0];
+//            newRay.org[1] = camera[1];
+//            newRay.org[2] = camera[2];
+//            
+//            //ray direction is the vector (pFar - pNear)
+//            newRay.dir[0] = pFar[0] - pNear[0];
+//            newRay.dir[1] = pFar[1] - pNear[1];
+//            newRay.dir[2] = pFar[2] - pNear[2];
+//            
+//            //normalize direction vector
+//            newRay.normalizeDirection();
+//            
+//            //undergoe ray plane test
+//            groundPlane = rayPlaneTest(i);
+//            
+//            //update the position of the object to the intersection point
+//            if ( groundPlane == true){
+//                objectPos[0] = inter[0];
+//                objectPos[1] = inter[1];
+//                objectPos[2] = inter[2];
+//                
+//                //check if object is hit between min and max bounds
+//                if ((objectsList[count].min + objectsList[count].translateX < objectPos[0] && objectPos[0] < objectsList[count].max + objectsList[count].translateX && objectsList[count].min + objectsList[count].translateZ < objectPos[2] && objectPos[2] < objectsList[count].max + objectsList[count].translateZ && objectPos[1] < objectsList[count].max + objectsList[count].translateY && objectsList[count].min + objectsList[count].translateY < objectPos[1])){
+//                    hit = true;
+//                    targetObject = count;
+//                    objectsList[count].hit = true;
+//                    //check to see right click to delete object
+//                    if (deleteObject == true){
+//                        objectsList[count].deleteObject();
+//                    }
+//                    break;
+//                }
+//                //return false hit else wise
+//                else{
+//                    hit = false;
+//                    objectsList[count].hit = false;
+//                }
+//                
+//                
+//            }
+//        }   //break out of cycle of object 
+//        if(hit == true){
+//            for(int z = 0; z < numOfObjects; z++){
+//                if(z != count){
+//                    objectsList[z].hit = false;
+//                }
+//            }
+//            break;
+//        }
+//}
+
 
 /*
  Used to draw actual platform where particles will held and manipulated with
@@ -141,191 +211,142 @@ void drawPlatform()
     
 }
 
-/*
- Section is used for drawing the wind turbine. As white rectangular box floating above the platform
- */
-void drawTurbine() {
-    
-    //particle cannon
-    glPushMatrix();
-    glTranslated(-2, 1, 2.2);
-    
-    glBegin(GL_QUADS);
-    
-    
-    //top
-    glColor3f(1, 1, 1);
-    glVertex3f(-0.3,1,0.3);
-    glVertex3f(0.3,1,0.3);
-    glVertex3f(0.3,1,-0.3);
-    glVertex3f(-0.3,1,-0.3);
-    
-    //front
-  	glColor3f(1, 1, 1);
-    glVertex3f(-0.3, 0, 0.3);
-    glVertex3f(0.3, 0, 0.3);
-    glVertex3f(0.3, 1, 0.3);
-    glVertex3f(-0.3, 1, 0.3);
-    
-    //left side
-    glColor3f(1, 1, 1);
-    glVertex3f(-0.3,1,0.3);
-    glVertex3f(-0.3,0,0.3);
-    glVertex3f(-0.3,0,-0.3);
-    glVertex3f(-0.3,1,-0.3);
-    
-    //right side
-    glColor3f(1, 1, 1);
-    glVertex3f(0.3,1,0.3);
-    glVertex3f(0.3,0,0.3);
-    glVertex3f(0.3,0,-0.3);
-    glVertex3f(0.3,1,-0.3);
-    
-    
-    //back side
-    glColor3f(1, 1, 1);
-    glVertex3f(-0.3,1,-0.3);
-    glVertex3f(-0.3,0,-0.3);
-    glVertex3f(0.3,0,-0.3);
-    glVertex3f(0.3,1,-0.3);
-    
-    glEnd();
-    glPopMatrix();
-    
-    
-}
 
-
-/*
- Section used to actual draw each particle out
- */
-void drawParticles(){
-    for (int i = 0; i < numOfParticles; i++){
-        glPushMatrix();
-        glTranslated(particles[i].posX,particles[i].posY,particles[i].posZ);//translate particle as per speciation in particle class
-        glRotatef(particleSpin, particles[i].rotationX, particles[i].rotationY, particles[i].rotationZ);//add rotation per specification of particle class
-        glColor3f(particles[i].particleColor.r, particles[i].particleColor.g, particles[i].particleColor.b);//add color per specification of particle class
-        
-        /*
-         Series of if statements used to depict what kind of particle will be drawn
-         That is; WireSphere, WireCube or a vertex
-         */
-        if (particleChoice == 1){
-            glutWireSphere(0.1,15,15);//draw sphere
-        }
-        else if (particleChoice == 2){
-            glutWireCube(0.2);//draw cube
-        }
-        else {
-            glEnable( GL_POINT_SMOOTH );
-            glEnable( GL_BLEND );
-            glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-            glPointSize(particles[i].particleSize);
-			glBegin(GL_POINTS);
-			glVertex3f(0,0,0);//draw point
-			glEnd();
-        }
-        glPopMatrix();
-    }
-}
 
 /*
  Section is used to update the new particle position. Update is called constantly as per idle function.
  With this it constatly redraws it giving it a smooth animation.
  */
-void changeParticlePosition(){
-    age++;//increment ag counter
-	for (int i = 0; i < numOfParticles; i++){
-        //check if users wanted friction on or off
-        if (frictionOnOff == true) {
-            particles[i].friction = 0.8;
-        }
-        else {
-            particles[i].friction = 1;
-        }
-        //check if user wanted wind on or off
-        if (wind == true){
-            particles[i].velX = 5;
-        }
-        //check if particle reached its life span, by seeing if age of particle is divisible by age counter
-        //if so, reset the postion
-        if( age % particles[i].age == 0 && age >= 100){
-            //Check which mode was clicked by the user
-            //that is; normal, rain or snow mode
-            if(normalMode == true){
-                particles[i].resetParticlePosition();
-            }
-            else if (rainMode == true){
-                particles[i].rainParticles();
-            }
-            else if (snowMode == true){
-                particles[i].snowParticles();
-            }
-            particles[i].age += age;
-        }
-        particles[i].updatePosition();//apply changes
-	}
-	glutPostRedisplay();
-}
 
+void pinballStruct(){
+    glBegin(GL_QUADS);
+    
+    //platform
+    glColor3f(0.3, 0, 1);
+    glVertex3f(-1.5,-0.7,2.5);
+    glVertex3f(1.5,-0.7,2.5);
+    glVertex3f(1.5,-0.7,-2.5);
+    glVertex3f(-1.5,-0.7,-2.5);
+    
+    glColor3f(0.3, 0, 1);
+    glVertex3f(-1.5,-0.6,2.5);
+    glVertex3f(1.5,-0.6,2.5);
+    glVertex3f(1.5,-0.6,-2.5);
+    glVertex3f(-1.5,-0.6,-2.5);
+    
+    glColor3f(0.3, -0.6, 1);
+    glVertex3f(1.5,-0.6,-2.5);
+    glVertex3f(-1.5,-0.6,-2.5);
+    glVertex3f(-1.5,-0.7,-2.5);
+    glVertex3f(1.5,-0.7,-2.5);
+    
+
+    
+    //left side
+    glColor3f(1, 0, 0.3);
+    glVertex3f(-1.5,0,2.5);
+    glVertex3f(-1.5,-0.7,2.5);
+    glVertex3f(-1.5,-0.7,-2.5);
+    glVertex3f(-1.5,0,-2.5);
+
+    glColor3f(1, 0, 0.3);
+    glVertex3f(-1.6,0,2.5);
+    glVertex3f(-1.6,-0.7,2.5);
+    glVertex3f(-1.6,-0.7,-2.5);
+    glVertex3f(-1.6,0,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(-1.6,-0.7,2.5);
+    glVertex3f(-1.5,-0.7,2.5);
+    glVertex3f(-1.5,-0.7,-2.5);
+    glVertex3f(-1.6,-0.7,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(-1.6,0,2.5);
+    glVertex3f(-1.5,0,2.5);
+    glVertex3f(-1.5,0,-2.5);
+    glVertex3f(-1.6,0,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(-1.6,0,2.5);
+    glVertex3f(-1.5,0,2.5);
+    glVertex3f(-1.5,-0.7,-2.5);
+    glVertex3f(-1.6,-0.7,-2.5);
+    
+
+    
+    //right side
+    glColor3f(1, 0, 0.3);
+    glVertex3f(1.5,0,2.5);
+    glVertex3f(1.5,-0.7,2.5);
+    glVertex3f(1.5,-0.7,-2.5);
+    glVertex3f(1.5,0,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(1.6,0,2.5);
+    glVertex3f(1.6,-0.7,2.5);
+    glVertex3f(1.6,-0.7,-2.5);
+    glVertex3f(1.6,0,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(1.6,-0.7,2.5);
+    glVertex3f(1.5,-0.7,2.5);
+    glVertex3f(1.5,-0.7,-2.5);
+    glVertex3f(1.6,-0.7,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(1.6,0,2.5);
+    glVertex3f(1.5,0,2.5);
+    glVertex3f(1.5,0,-2.5);
+    glVertex3f(1.6,0,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(1.6,0,-2.5);
+    glVertex3f(1.5,0,-2.5);
+    glVertex3f(1.5,-0.7,-2.5);
+    glVertex3f(1.6,-0.7,-2.5);
+
+
+    //back
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(1.6,0,-2.5);
+    glVertex3f(-1.5,0,-2.5);
+    glVertex3f(-1.5,-0.6,-2.5);
+    glVertex3f(1.6,-0.6,-2.5);
+    
+    glColor3f(1, 0, 0.3);
+    glVertex3f(1.6,0,-2.5);
+    glVertex3f(1.5,0,-2.5);
+    glVertex3f(1.5,-0.7,-2.5);
+    glVertex3f(1.6,-0.7,-2.5);
+
+    
+    
+	glEnd();
+    
+    
+}
 
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, 0, 1, 0);
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+    
     glPushMatrix();
     glRotatef(angY, 1, 0, 0);//rotate scene around x axis
     glRotatef(angX, 0, 1, 0);//rotate scene around y axis
-    drawPlatform();//draw platform
-    drawCanon();//draw canon
-    drawParticles();//draw particles
-    drawTurbine();//draw turbine
+    pinballStruct();
+
     glPopMatrix();
+    
     glFlush();
     glutSwapBuffers();
 }
 
-/*
- Section used for spawning random normal particle features
- */
-void spawnRandomParticles (){
-    for (int count = 0; count < 50; count++){
-        numOfParticles++;
-        particles[numOfParticles].resetParticlePosition();//respawn to normal features
-        //turn off other modes, select normal
-        particles[numOfParticles].rainMode = false;
-        particles[numOfParticles].snowMode = false;
-        particles[numOfParticles].normalMode = true;
-    }
-}
-
-/*
- Section used for spawning rain particle features
- */
-void spawnRainParticles (){
-    for(int i=0;i<50;i++){
-        numOfParticles++;
-        particles[numOfParticles].rainParticles();//respawn to rain features
-        //turn off other modes, select normal
-        particles[numOfParticles].rainMode = true;
-        particles[numOfParticles].snowMode = false;
-        particles[numOfParticles].normalMode = false;
-    }
-}
-
-/*
- Section used for spawning snow particle features
- */
-
-void spawnSnowParticles (){
-    for(int i=0;i<50;i++){
-        numOfParticles++;
-        particles[numOfParticles].snowParticles();//respawn to snow features
-        //turn off other modes, select normal
-        particles[numOfParticles].rainMode = false;
-        particles[numOfParticles].snowMode = true;
-        particles[numOfParticles].normalMode = false;
-    }
-}
 
 void kbd(unsigned char key, int x, int y)
 {
@@ -364,7 +385,6 @@ void kbd(unsigned char key, int x, int y)
             particles[numOfParticles].resetParticleProperties();
         }
         numOfParticles = 0;
-        spawnRandomParticles();
         //turn of modes and turn on normal
         rainMode = false, snowMode = false, normalMode = true;
         printf("Change setting to normal mode/reset particles \n");
@@ -391,27 +411,7 @@ void kbd(unsigned char key, int x, int y)
             printf("Wind on\n");
         }
     }
-    //turns on rain mode
-    if(key == '8'){
-        for(int i=0;i<numOfParticles;i++){
-            particles[numOfParticles].resetParticleProperties();
-        }
-        numOfParticles = 0;
-        spawnRainParticles();
-        rainMode = true, snowMode = false, normalMode = false;
-        printf("Reset setting to rain mode\n");
-        
-    }
-    //turn on snow mode
-    if(key == '9'){
-        for(int i=0;i<numOfParticles;i++){
-            particles[numOfParticles].resetParticleProperties();
-        }
-        numOfParticles = 0;
-        spawnSnowParticles();
-        rainMode = false, snowMode = true, normalMode = false;
-        printf("Reset setting to snow mode\n");
-    }
+
 }
 
 void processSpecialKeys(int key, int x, int y) {
@@ -419,41 +419,43 @@ void processSpecialKeys(int key, int x, int y) {
     //Responsible for camera movement, press right to turn right, left for left, up for up and down for down
     switch(key) {
 		case GLUT_KEY_UP:
-            angY = angY +1;
+            camera[1] +=+ 0.5;
             break;
 		case GLUT_KEY_DOWN :
-            angY = angY -1;
+            camera[1] -= 0.5;
             break;
         case GLUT_KEY_LEFT:
-            angX = angX + 1;
+            camera[0] -= 0.5;
             break;
         case GLUT_KEY_RIGHT:
-            angX = angX - 1;
+            camera[0] += 0.5;
             break;
 	}
     
 }
-
-
 void idle()
 {
     if (startStop == true){
-        changeParticlePosition();//update particle position
+
         particleSpin++;//increment angle so particles can rotate
 	}
     glutPostRedisplay();
 }
 
-void printCommands(){
-    printf("Welcome to Meraj's Particle Fountain!! \n\n");
-    printf("Basic Commands: \n");
-    printf(" 1) F - friction mode \n 2) Space - stop/start simulation \n 3) Arrow Keys - Scene Rotation \n 4) R - Rest particles \n 5) Esc - Quit Program");
-    printf("\n\nExtra Commands: \n\n");
-    printf(" 1) 1 - change particle to wire sphere \n 2) 2 - change particle to wire cube (change to this view to see rotation) \n 3) 3 - change particle to vertex \n 4) W - wind mode (blows to the right side) \n 5) 7 - changes setting to normal mode \n 6) 8 - Changes setting to rain mode \n 7) 9 - Changes setting to snow mode \n 8) Particle life - there is not key to activate this, note that the particle life is randowm for all particles");
-    printf("\n\nExtra Features: \n\n");
-    printf("1) Wind Fan - The white rectangular box hovering over the platform is a wind turbine. Every time a particle comes in proxmity or croses its path (along z axis), i'll be blown away. Note that the particle must be in it's view. \n");
-    printf("2) Floor Hole - A black hole is placed on the platform. If particles roll over it or bounce into it, it will fall through into abyss\n\n\n\n\n");
+void mouse(int btn, int state, int x, int y)
+{
+    //ray cast is pressed
+	if(btn == GLUT_LEFT_BUTTON)
+	{
+        //rayCast(x, y);
+	}
+    //delete if pressed
+	if(btn == GLUT_RIGHT_BUTTON)
+	{
+	}
     
+	glFlush();
+    glutSwapBuffers();
 }
 
 int main(int argc, char** argv)
@@ -466,10 +468,10 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(kbd);
     glutSpecialFunc(processSpecialKeys);
 	glutIdleFunc(idle);
-    
-    glMatrixMode(GL_PROJECTION);
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(-3.5, 3.5, -3.5, 3.5, -3.5, 3.5);//set view to close up
+	gluPerspective(65, 1, 1, 100);
     
 	glMatrixMode(GL_MODELVIEW);
     
@@ -477,8 +479,6 @@ int main(int argc, char** argv)
     glCullFace(GL_BACK);
     
 	glRotatef(10, 1, 0, 0);
-    printCommands();
-    spawnRandomParticles();//spawn particles as soon as program starts
     glutDisplayFunc(display);
 	glutMainLoop();
 	return(0);

@@ -30,7 +30,7 @@
 
 /* Begin PBXFileReference section */
 		3C351976184A8CBC00F6C6A2 /* Graphics-Final-Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Graphics-Final-Project"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3C351979184A8CBC00F6C6A2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3C351979184A8CBC00F6C6A2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = "Graphics-Final-Project/main.cpp"; sourceTree = "<group>"; };
 		3C35197B184A8CBC00F6C6A2 /* Graphics_Final_Project.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Graphics_Final_Project.1; sourceTree = "<group>"; };
 		3C351982184A912700F6C6A2 /* MathLibrary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MathLibrary.cpp; sourceTree = "<group>"; };
 		3C351983184A912700F6C6A2 /* MathLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathLibrary.h; sourceTree = "<group>"; };
@@ -38,6 +38,10 @@
 		3C351986184A919200F6C6A2 /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
 		3C351988184AA35600F6C6A2 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		3C35198A184AA36000F6C6A2 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		6C871880184EDEAE006FFFF4 /* Physics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Physics.cpp; sourceTree = "<group>"; };
+		6C871881184EDEAE006FFFF4 /* Physics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Physics.h; sourceTree = "<group>"; };
+		6C871883184F1B64006FFFF4 /* ray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ray.cpp; sourceTree = "<group>"; };
+		6C871884184F1B64006FFFF4 /* ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +64,13 @@
 				3C351988184AA35600F6C6A2 /* GLUT.framework */,
 				3C351982184A912700F6C6A2 /* MathLibrary.cpp */,
 				3C351983184A912700F6C6A2 /* MathLibrary.h */,
-				3C351985184A919200F6C6A2 /* Particle.cpp */,
 				3C351986184A919200F6C6A2 /* Particle.h */,
+				3C351985184A919200F6C6A2 /* Particle.cpp */,
+				6C871880184EDEAE006FFFF4 /* Physics.cpp */,
+				6C871881184EDEAE006FFFF4 /* Physics.h */,
+				6C871883184F1B64006FFFF4 /* ray.cpp */,
+				6C871884184F1B64006FFFF4 /* ray.h */,
+				3C351979184A8CBC00F6C6A2 /* main.cpp */,
 				3C351978184A8CBC00F6C6A2 /* Graphics-Final-Project */,
 				3C351977184A8CBC00F6C6A2 /* Products */,
 			);
@@ -78,7 +87,6 @@
 		3C351978184A8CBC00F6C6A2 /* Graphics-Final-Project */ = {
 			isa = PBXGroup;
 			children = (
-				3C351979184A8CBC00F6C6A2 /* main.cpp */,
 				3C35197B184A8CBC00F6C6A2 /* Graphics_Final_Project.1 */,
 			);
 			path = "Graphics-Final-Project";
@@ -138,6 +146,8 @@
 				3C35197A184A8CBC00F6C6A2 /* main.cpp in Sources */,
 				3C351987184A919200F6C6A2 /* Particle.cpp in Sources */,
 				3C351984184A912700F6C6A2 /* MathLibrary.cpp in Sources */,
+				6C871882184EDEAE006FFFF4 /* Physics.cpp in Sources */,
+				6C871885184F1B64006FFFF4 /* ray.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
