@@ -35,10 +35,10 @@ GLdouble pFar[3]; //depth for z
 float objectPos[3];//stores object position
 float inter[3];//stores object intersection
 bool groundPlane = true;//check if hit on plane
-double platformNormal[4][3] ={{0,1,0},{0,0,1},{0,-1,0},{1,0,0}};
-double platformPoints[4][3] = {{-1.5,-0.6,2.5}, {1.6,-0.7,2.5},{-1.5,-0.7,2.5},{-1.6,-0.7,2.5}};
-double minX = -1.5, maxX = 1.5, minY = -0.7, maxY = 0, minZ = -2.8, maxZ = 2.8;
-bool hit;
+double platformNormal[2][3] ={{0,0,1},{1,0,0}};
+double platformPoints[2][3] = {{-2.5,-0.7,2.5}, {2.5,4.7,0}};
+double minX = -2.500000, maxX = 2.5, minY = -0.7, maxY = 4.7, minZ = 0, maxZ = 2.5;
+bool hit1, hit2;
 
 
 
@@ -101,7 +101,7 @@ void rayCast(float x, float y)
 {
     //count through number of objects to perform tests on each one
         //count through number of planes of each object to perform test on each one
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 2; i++){
             
             
             Get3DPos(x, y, 0.0, pNear);
@@ -129,13 +129,18 @@ void rayCast(float x, float y)
                 objectPos[1] = inter[1];
                 objectPos[2] = inter[2];
                 
+                printf("x = %f\n",objectPos[0]);
+                printf("y = %f\n",objectPos[1]);
+                printf("z = %f\n",objectPos[2]);
+                
                 //check if object is hit between min and max bounds
-                if ((minX < objectPos[0] && objectPos[0] < maxX && minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] < maxY && minY < objectPos[1])){
-                    hit = true;
+                if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] < maxY && minY < objectPos[1])){
+                    printf("FUCK YOIU");
+                    hit1 = true;
                     break;
                 }
                 else{
-                    hit = false;
+                    hit1 = false;
                 }
      
                 
@@ -156,110 +161,76 @@ void rayCast(float x, float y)
 
 void pinballStruct(){
     glBegin(GL_QUADS);
-                                                                                                                              
+    
     //platform
-    glColor3f(0.3, 0, 1);
-    glVertex3f(-1.5,-0.7,2.5);
-    glVertex3f(1.5,-0.7,2.5);
-    glVertex3f(1.5,-0.7,-2.5);
-    glVertex3f(-1.5,-0.7,-2.5);
     
     glColor3f(0.3, 0, 1);
-    glVertex3f(-1.5,-0.6,2.5);
-    glVertex3f(1.5,-0.6,2.5);
-    glVertex3f(1.5,-0.6,-2.5);
-    glVertex3f(-1.5,-0.6,-2.5);
-    
-    glColor3f(0.3, -0.6, 1);
-    glVertex3f(1.5,-0.6,-2.5);
-    glVertex3f(-1.5,-0.6,-2.5);
-    glVertex3f(-1.5,-0.7,-2.5);
-    glVertex3f(1.5,-0.7,-2.5);
-
-    //left side
-    glColor3f(1, 0, 0.3);
-    glVertex3f(-1.5,0,2.5);
-    glVertex3f(-1.5,-0.7,2.5);
-    glVertex3f(-1.5,-0.7,-2.5);
-    glVertex3f(-1.5,0,-2.5);
-
-    glColor3f(1, 0, 0.3);
-    glVertex3f(-1.6,0,2.5);
-    glVertex3f(-1.6,-0.7,2.5);
-    glVertex3f(-1.6,-0.7,-2.5);
-    glVertex3f(-1.6,0,-2.5);
+    glVertex3f(-2.5,4.7,2.5);
+    glVertex3f(2.5,4.7,2.5);
+    glVertex3f(2.5,4.7,0);
+    glVertex3f(-2.5,4.7,0);
     
     glColor3f(1, 0, 0.3);
-    glVertex3f(-1.6,-0.7,2.5);
-    glVertex3f(-1.5,-0.7,2.5);
-    glVertex3f(-1.5,-0.7,-2.5);
-    glVertex3f(-1.6,-0.7,-2.5);
+    glVertex3f(2.5,-0.7,2.5);
+    glVertex3f(2.5,4.7,2.5);
+    glVertex3f(2.5,4.7,0);
+    glVertex3f(2.5,-0.7,0);
     
     glColor3f(1, 0, 0.3);
-    glVertex3f(-1.6,0,2.5);
-    glVertex3f(-1.5,0,2.5);
-    glVertex3f(-1.5,0,-2.5);
-    glVertex3f(-1.6,0,-2.5);
+    glVertex3f(-2.5,-0.7,2.5);
+    glVertex3f(-2.5,4.7,2.5);
+    glVertex3f(-2.5,4.7,0);
+    glVertex3f(-2.5,-0.7,0);
     
-    glColor3f(1, 0, 0.3);
-    glVertex3f(-1.6,0,2.5);
-    glVertex3f(-1.5,0,2.5);
-    glVertex3f(-1.5,-0.7,-2.5);
-    glVertex3f(-1.6,-0.7,-2.5);
+    //flippers
     
-
     
-    //right side
-    glColor3f(1, 0, 0.3);
-    glVertex3f(1.5,0,2.5);
-    glVertex3f(1.5,-0.7,2.5);
-    glVertex3f(1.5,-0.7,-2.5);
-    glVertex3f(1.5,0,-2.5);
+    glColor3f(0.3, 0, 1);
+    glVertex3f(0.4,-2,2.5);
+    glVertex3f(2.5,-0.7,2.5);
+    glVertex3f(2.5,-0.7,0);
+    glVertex3f(0.4,-2,0);
     
-    glColor3f(1, 0, 0.3);
-    glVertex3f(1.6,0,2.5);
-    glVertex3f(1.6,-0.7,2.5);
-    glVertex3f(1.6,-0.7,-2.5);
-    glVertex3f(1.6,0,-2.5);
+    glColor3f(0.3, 0, 1);
+    glVertex3f(-0.4,-2,2.5);
+    glVertex3f(-2.5,-0.7,2.5);
+    glVertex3f(-2.5,-0.7,0);
+    glVertex3f(-0.4,-2,0);
     
-    glColor3f(1, 0, 0.3);
-    glVertex3f(1.6,-0.7,2.5);
-    glVertex3f(1.5,-0.7,2.5);
-    glVertex3f(1.5,-0.7,-2.5);
-    glVertex3f(1.6,-0.7,-2.5);
-    
-    glColor3f(1, 0, 0.3);
-    glVertex3f(1.6,0,2.5);
-    glVertex3f(1.5,0,2.5);
-    glVertex3f(1.5,0,-2.5);
-    glVertex3f(1.6,0,-2.5);
-    
-    glColor3f(1, 0, 0.3);
-    glVertex3f(1.6,0,-2.5);
-    glVertex3f(1.5,0,-2.5);
-    glVertex3f(1.5,-0.7,-2.5);
-    glVertex3f(1.6,-0.7,-2.5);
-
-
     //back
     
-    glColor3f(1, 0, 0.3);
-    glVertex3f(1.6,0,-2.5);
-    glVertex3f(-1.5,0,-2.5);
-    glVertex3f(-1.5,-0.6,-2.5);
-    glVertex3f(1.6,-0.6,-2.5);
+    glColor3f(0.3, 0.3, 0.3);
+    glVertex3f(2.5,-0.7,0);
+    glVertex3f(2.5,4.7,0);
+    glVertex3f(-2.5,4.7,0);
+    glVertex3f(-2.5,-0.7,0);
     
-    glColor3f(1, 0, 0.3);
-    glVertex3f(1.6,0,-2.5);
-    glVertex3f(1.5,0,-2.5);
-    glVertex3f(1.5,-0.7,-2.5);
-    glVertex3f(1.6,-0.7,-2.5);
-
+    
     
     
 	glEnd();
     
     
+}
+
+/* drawAxis() -- draws an axis at the origin of the coordinate system
+ *   red = +X axis, green = +Y axis, blue = +Z axis
+ */
+void drawAxis()
+{
+	glBegin(GL_LINES);
+    glColor3f(1, 0, 0);
+    glVertex3f(0,0,0);
+    glVertex3f(50,0,0);
+    
+    glColor3f(0,1,0);
+    glVertex3f(0,0,0);
+    glVertex3f(0,50,0);
+    
+    glColor3f(0,0,1);
+    glVertex3f(0,0,0);
+    glVertex3f(0,0,50);
+	glEnd();
 }
 
 void display(void)
@@ -268,9 +239,12 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, 0, 1, 0);
+    glPointSize(10);
+    glBegin(GL_POINTS);
+    glVertex3f(objectPos[0],objectPos[1],objectPos[2]);//draw point
+    glEnd();
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    
-    if (hit == true){
+    if (hit1 == true){
     glutSolidTeapot(1);
     }
     
