@@ -35,10 +35,11 @@ GLdouble pFar[3]; //depth for z
 float objectPos[3];//stores object position
 float inter[3];//stores object intersection
 bool groundPlane = true;//check if hit on plane
-double platformNormal[2][3] ={{0,0,1},{1,0,0}};
+double platformNormal[2][3] ={{-1,0,0},{1,0,0}};
 double platformPoints[2][3] = {{-2.5,-0.7,2.5}, {2.5,4.7,0}};
-double minX = -2.500000, maxX = 2.5, minY = -0.7, maxY = 4.7, minZ = 0, maxZ = 2.5;
+float minX = -2.500000, maxX = 2.500000, minY = -0.7, maxY = 4.7, minZ = 0, maxZ = 2.5;
 bool hit1, hit2;
+
 
 
 
@@ -134,13 +135,18 @@ void rayCast(float x, float y)
                 printf("z = %f\n",objectPos[2]);
                 
                 //check if object is hit between min and max bounds
-                if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] < maxY && minY < objectPos[1])){
-                    printf("FUCK YOIU");
+                if ((minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
                     hit1 = true;
+                    break;
+                }
+                else if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && minX == objectPos[0]){
+                    hit2 = true;
                     break;
                 }
                 else{
                     hit1 = false;
+                    hit2 = false;
+    
                 }
      
                 
@@ -160,23 +166,26 @@ void rayCast(float x, float y)
  */
 
 void pinballStruct(){
-    glBegin(GL_QUADS);
     
+
+    glBegin(GL_QUADS);
     //platform
     
+    glEnable(GL_BLEND); //Enable blending.
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
     glColor3f(0.3, 0, 1);
     glVertex3f(-2.5,4.7,2.5);
     glVertex3f(2.5,4.7,2.5);
     glVertex3f(2.5,4.7,0);
     glVertex3f(-2.5,4.7,0);
     
-    glColor3f(1, 0, 0.3);
+    glColor4f(1, 0, 0.3,0.55);
     glVertex3f(2.5,-0.7,2.5);
     glVertex3f(2.5,4.7,2.5);
     glVertex3f(2.5,4.7,0);
     glVertex3f(2.5,-0.7,0);
     
-    glColor3f(1, 0, 0.3);
+    glColor4f(1, 0, 0.3,0.55);
     glVertex3f(-2.5,-0.7,2.5);
     glVertex3f(-2.5,4.7,2.5);
     glVertex3f(-2.5,4.7,0);
@@ -237,6 +246,7 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
+    drawAxis();
     glLoadIdentity();
     gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, 0, 1, 0);
     glPointSize(10);
@@ -244,7 +254,7 @@ void display(void)
     glVertex3f(objectPos[0],objectPos[1],objectPos[2]);//draw point
     glEnd();
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    if (hit1 == true){
+    if (hit1 == true || hit2 == true){
     glutSolidTeapot(1);
     }
     
@@ -370,6 +380,16 @@ void mouse(int btn, int state, int x, int y)
     glutSwapBuffers();
 }
 
+
+/*  Initialize alpha blending function.  */
+static void init(void)
+{
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glShadeModel (GL_FLAT);
+}
+
+
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
@@ -390,6 +410,7 @@ int main(int argc, char** argv)
     
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
+    init();
     
 	glRotatef(10, 1, 0, 0);
     glutDisplayFunc(display);
