@@ -20,7 +20,7 @@ public:
     //field properties
     color particleColor;//store color properties of object
     float particleSize;//store size property
-    double posX, posY, posZ;//store positions of particle
+    double posX, posY, posZ;//store positions of particle (center)
     double velX, velY, velZ;//store velocity of particles
 
     //constructor
