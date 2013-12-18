@@ -9,9 +9,12 @@
 #include <stdlib.h>
 #include <GLUT/glut.h>
 #include "MathLibrary.h"
+#include "Physics.h"
 #include "Particle.h"
 #include <math.h>
 #include "ray.h"
+
+
 
 
 ray newRay;
@@ -444,5 +447,8 @@ int main(int argc, char** argv)
 	//glRotatef(10, 1, 0, 0);
     glutDisplayFunc(display);
 	glutMainLoop();
+    Particle ball;
+    Physics test;
+    test.moveParticle(ball);
 	return(0);
 }
