@@ -39,7 +39,7 @@ vec2D::vec2D(float newX, float newY)
     y = newY;
     magnitude = 0;
 }
-
+//TODO: Seperate to another class
 //intilize color
 color::color()
 {

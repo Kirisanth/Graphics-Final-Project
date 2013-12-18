@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <GLUT/glut.h>
 #include "MathLibrary.h"
-#include "Physics.h"
+#include "PhysicsEngine.h"
 #include "Particle.h"
 #include <math.h>
 #include "ray.h"
@@ -448,7 +448,7 @@ int main(int argc, char** argv)
     glutDisplayFunc(display);
 	glutMainLoop();
     Particle ball;
-    Physics test;
+    PhysicsEngine test;
     test.moveParticle(ball);
 	return(0);
 }
