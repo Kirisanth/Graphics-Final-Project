@@ -14,20 +14,6 @@
 #include "ray.h"
 
 
-static int numOfParticles = 0;//count num of particles
-static Particle particles[5000];//store particles
-int particleChoice = 1;//choose particle tep
-float angY = 0;//roation around Y
-float angX = 0;//rotation around X
-float particleSpin = 0;//rotating particles
-int age = 1;//age of particles
-bool startStop = true;//start stop animation
-bool frictionOnOff = false;//turn friction on and off
-bool wind = false;//turn wind on and off
-bool rainMode = false, snowMode = false, normalMode = true;//allocating modes for desired effects
-double camera[3] = {9,9,9};//declares camera at position
-
-
 ray newRay;
 GLdouble newPoint [3];//creates new point
 GLdouble pNear[3];//depth for z
@@ -39,9 +25,15 @@ double platformNormal[2][3] ={{-1,0,0},{1,0,0}};
 double platformPoints[2][3] = {{-2.5,-0.7,2.5}, {2.5,4.7,0}};
 float minX = -2.500000, maxX = 2.500000, minY = -0.7, maxY = 4.7, minZ = 0, maxZ = 2.5;
 bool hit1, hit2;
-
-
-
+double transparentWall1 = 1;
+double transparentWall2 = 1;
+int orientation[3] = {0,1,0};
+bool flip1, flip2;
+float moveY = -2;
+float angY = 9*sin(1.05);//roation around Y
+double camera[3] = {0,9,9};//declares camera at position
+double bounceY = 0;
+int x = -1;
 
 
 void Get3DPos(int x, int y, float winz, GLdouble point[3])
@@ -104,7 +96,6 @@ void rayCast(float x, float y)
         //count through number of planes of each object to perform test on each one
         for (int i = 0; i < 2; i++){
             
-            
             Get3DPos(x, y, 0.0, pNear);
             Get3DPos(x, y, 1.0, pFar);
             
@@ -130,16 +121,12 @@ void rayCast(float x, float y)
                 objectPos[1] = inter[1];
                 objectPos[2] = inter[2];
                 
-                printf("x = %f\n",objectPos[0]);
-                printf("y = %f\n",objectPos[1]);
-                printf("z = %f\n",objectPos[2]);
-                
                 //check if object is hit between min and max bounds
-                if ((minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
+                if ((minZ <= objectPos[2] && objectPos[2] <= maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
                     hit1 = true;
                     break;
                 }
-                else if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && minX == objectPos[0]){
+                if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && minX == objectPos[0]){
                     hit2 = true;
                     break;
                 }
@@ -149,15 +136,29 @@ void rayCast(float x, float y)
     
                 }
      
-                
             }
-        }  
+        }
 }
-            
-            
-            
-                                                                                                                              
 
+void drawWall1(){
+    glBegin(GL_QUADS);
+    glColor4f(1, 0, 0.3,transparentWall1);
+    glVertex3f(-2.5,-0.7,2.5);
+    glVertex3f(-2.5,4.7,2.5);
+    glVertex3f(-2.5,4.7,0);
+    glVertex3f(-2.5,-0.7,0);
+    glEnd();
+}
+
+void drawWall2(){
+    glBegin(GL_QUADS);
+    glColor4f(1, 0, 0.3,transparentWall2);
+    glVertex3f(2.5,-0.7,2.5);
+    glVertex3f(2.5,4.7,2.5);
+    glVertex3f(2.5,4.7,0);
+    glVertex3f(2.5,-0.7,0);
+    glEnd();
+}
 
 
 /*
@@ -165,49 +166,36 @@ void rayCast(float x, float y)
  With this it constatly redraws it giving it a smooth animation.
  */
 
-void pinballStruct(){
+void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     
 
     glBegin(GL_QUADS);
-    //platform
     
     glEnable(GL_BLEND); //Enable blending.
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
+    
+
+    //platform
     glColor3f(0.3, 0, 1);
     glVertex3f(-2.5,4.7,2.5);
     glVertex3f(2.5,4.7,2.5);
     glVertex3f(2.5,4.7,0);
     glVertex3f(-2.5,4.7,0);
-    
-    glColor4f(1, 0, 0.3,0.55);
-    glVertex3f(2.5,-0.7,2.5);
-    glVertex3f(2.5,4.7,2.5);
-    glVertex3f(2.5,4.7,0);
-    glVertex3f(2.5,-0.7,0);
-    
-    glColor4f(1, 0, 0.3,0.55);
-    glVertex3f(-2.5,-0.7,2.5);
-    glVertex3f(-2.5,4.7,2.5);
-    glVertex3f(-2.5,4.7,0);
-    glVertex3f(-2.5,-0.7,0);
     
     //flippers
-    
-    
     glColor3f(0.3, 0, 1);
-    glVertex3f(0.4,-2,2.5);
+    glVertex3f(0.4,movFlip1,2.5);
     glVertex3f(2.5,-0.7,2.5);
     glVertex3f(2.5,-0.7,0);
-    glVertex3f(0.4,-2,0);
+    glVertex3f(0.4,movFlip1,0);
     
     glColor3f(0.3, 0, 1);
-    glVertex3f(-0.4,-2,2.5);
+    glVertex3f(-0.4,movFlip2,2.5);
     glVertex3f(-2.5,-0.7,2.5);
     glVertex3f(-2.5,-0.7,0);
-    glVertex3f(-0.4,-2,0);
+    glVertex3f(-0.4,movFlip2,0);
     
     //back
-    
     glColor3f(0.3, 0.3, 0.3);
     glVertex3f(2.5,-0.7,0);
     glVertex3f(2.5,4.7,0);
@@ -215,8 +203,15 @@ void pinballStruct(){
     glVertex3f(-2.5,-0.7,0);
     
     
-    
-    
+    if(drawWall1First == true){//Created to make sure wall 1 is seen if wall 2 is transparent
+        drawWall1();
+        drawWall2();
+    }
+    else{
+        drawWall2();
+        drawWall1();
+    }
+
 	glEnd();
     
     
@@ -242,33 +237,104 @@ void drawAxis()
 	glEnd();
 }
 
+void Points(){
+    //char dig = (char)(((int)'0')+10);
+    char *a= "Points: ";
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos3f( 2.0f , -1.0f ,4.0f );
+    for(int i = 0; a[i] != '\0'; i++)
+        glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , a[i]);
+    
+    std::string s = std::to_string(4000);
+    char const *pchar = s.c_str();
+    for (int count = 0; pchar[count] != '\0'; count++){
+        glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , pchar[count]);
+    }
+}
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
-    drawAxis();
     glLoadIdentity();
-    gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, 0, 1, 0);
+    gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, orientation[0], orientation[1], orientation[2]);
+    
+    //intersection point for ray casting
+    /*
     glPointSize(10);
     glBegin(GL_POINTS);
     glVertex3f(objectPos[0],objectPos[1],objectPos[2]);//draw point
     glEnd();
+    */
+    
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    if (hit1 == true || hit2 == true){
-    glutSolidTeapot(1);
+    Points();
+    glPushMatrix();
+    
+    //for first person camera 
+    //glRotatef(45, 1, 0, 0);
+    //glTranslatef(-1, 7.1 + bounceY, -.5);
+    
+    //drawAxis();
+    bool drawWall1First;
+    if ((-9<camera[0] && camera[0] < -6) || hit2 == true){
+        transparentWall1 = 0.2;
+        drawWall1First = false;
     }
     
-    glPushMatrix();
-    glRotatef(angY, 1, 0, 0);//rotate scene around x axis
-    glRotatef(angX, 0, 1, 0);//rotate scene around y axis
-    pinballStruct();
-
-    glPopMatrix();
+    else if ((9>camera[0] && camera[0] > 6) || hit1 == true){
+        transparentWall2 = 0.2;
+        drawWall1First = true;
+    }
+    else{
+        transparentWall1 = 1;
+        transparentWall2 = 1;
+    }
     
+    
+    
+    if (flip1 == true || flip2 == true){//Check to see if user pressed flipper button a or s
+            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            x++;//x is used to iterate over moving the flipper up then back down
+            if (x < 13)//increment by 0.1 to move flipper up. When x reaches 12, it'll reach its maximum which is -0.4
+                moveY = moveY + 0.1;
+            else//decrease by 0.1 to move flipper down
+                moveY = moveY - 0.1;
+            if(flip1 == true && flip2 == true)//check if both buttons have been pressed a and s
+                pinballStruct(moveY,moveY,drawWall1First);//make both flippers move
+            else if (flip1 == true)//check if s is pressed
+                pinballStruct(moveY,-2,drawWall1First);//make s flipper move
+            else//else a is pressed
+                pinballStruct(-2,moveY,drawWall1First);//make a flipper move
+            //glutSwapBuffers();
+        //}
+        if(x >= 25){//if x = 25, flipper is at orginal position
+            flip1 =false;
+            flip2 = false;
+            x = -1;
+        }
+    }
+    else{
+        pinballStruct(-2,-2,drawWall1First);
+    }
+    
+    //For first person camera
+    /*
+    glPushMatrix();
+    if (bounceY >= 4.7)
+        bounceY = 0;
+    else if(bounceY >= 0)
+        bounceY = bounceY + 0.1;
+    glTranslatef(0, bounceY,0);
+    glutSolidCube(0.5);
+    glPopMatrix();
+    */
+    
+    glPopMatrix();
     glFlush();
     glutSwapBuffers();
+    glutPostRedisplay();
 }
-
 
 void kbd(unsigned char key, int x, int y)
 {
@@ -278,60 +344,20 @@ void kbd(unsigned char key, int x, int y)
 	{
 		exit(0);
 	}
-    if ( key == '1'){
-        particleChoice = 1;//user wants spheres
-        printf("Particle are now spheres\n");
-    }
-    else if (key == '2'){
-        particleChoice = 2;//user wants cubes
-        printf("Particle are now cubes\n");
-    }
-    else if (key == '3'){
-        particleChoice = 3;//user wants verticies
-        printf("Particle are now vetrticies\n");
-    }
-    if (key == ' '){
-        //check to see if on, is so turn off and vice versa
-        if (startStop == true){
-            startStop = false;
-            printf("stoped animation\n");
-        }
-        else if (startStop == false){
-            startStop = true;
-            printf("started animation\n");
-        }
-    }
     //resets particles to normal mode
-    if(key == 'r' || key == '7'){
-        for(int i=0;i<numOfParticles;i++){
-            particles[numOfParticles].resetParticleProperties();
-        }
-        numOfParticles = 0;
-        //turn of modes and turn on normal
-        rainMode = false, snowMode = false, normalMode = true;
-        printf("Change setting to normal mode/reset particles \n");
+    if(key == 'r'){
+        
     }
-    //turn on/off friction mode
-    if(key == 'f'){
-        if (frictionOnOff == true){
-            frictionOnOff = false;
-            printf("Friction off\n");
-        }
-        else if (frictionOnOff == false){
-            frictionOnOff = true;
-            printf("Friction on\n");
-        }
+
+    if(key == 's'){
+        flip1 = true;
     }
-    //turn on/off wind mode
-    if(key == 'w'){
-        if (wind == true){
-            wind = false;
-            printf("Wind off\n");
-        }
-        else if (wind == false){
-            wind = true;
-            printf("Wind on\n");
-        }
+    if(key == 'a'){
+        flip2 = true;
+    }
+    if(key == 's' && key == 'a'){
+        flip1 = true;
+        flip2 = true;
     }
 
 }
@@ -347,20 +373,23 @@ void processSpecialKeys(int key, int x, int y) {
             camera[1] -= 0.5;
             break;
         case GLUT_KEY_LEFT:
-            camera[0] -= 0.5;
+            angY = angY + 0.05;
+            camera[0]=9*cos(angY);
+            camera[2]=9*sin(angY);
+            
             break;
         case GLUT_KEY_RIGHT:
-            camera[0] += 0.5;
+            angY = angY - 0.05;
+            camera[0]=9*cos(angY);
+            camera[2]=9*sin(angY);
             break;
 	}
     
 }
+
+
 void idle()
 {
-    if (startStop == true){
-
-        particleSpin++;//increment angle so particles can rotate
-	}
     glutPostRedisplay();
 }
 
@@ -397,14 +426,14 @@ int main(int argc, char** argv)
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("Particle Fountain");
     
-	glutKeyboardFunc(kbd);
+	glutKeyboardUpFunc(kbd);
     glutSpecialFunc(processSpecialKeys);
 	glutIdleFunc(idle);
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(65, 1, 1, 100);
-    
+	gluPerspective(90, 1, 1, 100);
+
 	glMatrixMode(GL_MODELVIEW);
     glutMouseFunc(mouse);
     
@@ -412,7 +441,7 @@ int main(int argc, char** argv)
     glCullFace(GL_BACK);
     init();
     
-	glRotatef(10, 1, 0, 0);
+	//glRotatef(10, 1, 0, 0);
     glutDisplayFunc(display);
 	glutMainLoop();
 	return(0);
