@@ -21,12 +21,8 @@ public:
     //store positions of object
     double posX, posY, posZ;
     
-    float normal1[3];
-    float normal2[3];
-    float normal3[3];
-    float normal4[3];
-    float normal5[3];
-    float normal6[3];
+    float pointsForNormal[6][3];
+    float normal[6][3];
     
     //cube vertices
 

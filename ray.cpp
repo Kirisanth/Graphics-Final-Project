@@ -33,3 +33,74 @@ void ray::normalizeDirection(){
     norm[2] = dir[2]/length *-1;
     
 }
+
+//objects
+double ray::distance(int x, int y, std::vector<ObjectsModel> currentObject){
+    return -1 * (currentObject.at(x).pointsForNormal[y][0]* currentObject.at(x).normal[y][0] + currentObject.at(x).pointsForNormal[y][1]* currentObject.at(x).normal[y][1] + currentObject.at(x).pointsForNormal[y][2]* currentObject.at(x).normal[y][2]);
+}
+
+//pinball stru
+double ray::distance(int count, Walls wallObject){
+        return -1 * (wallObject.platformPoints[count][0]* wallObject.platformNormal[count][0] + wallObject.platformPoints[count][1]* wallObject.platformNormal[count][1] + wallObject.platformPoints[count][2]* wallObject.platformNormal[count][2]);
+}
+
+//objects
+float ray::normalMultiplyDirection(int x, int y, std::vector<ObjectsModel> currentObject){
+    return (currentObject.at(x).normal[y][0] *  norm[0] + currentObject.at(x).normal[y][1] * norm[1] + currentObject.at(x).normal[y][2] * norm[2]);
+}
+
+//structure
+float ray::normalMultiplyDirection(int count, Walls wallObject){
+        return (wallObject.platformNormal[count][0] *  norm[0] + wallObject.platformNormal[count][1] * norm[1] + wallObject.platformNormal[count][2] * norm[2]);
+}
+
+//for objects
+float ray::normalMultiplyOrgin(int x, int y, float t,std::vector<ObjectsModel> currentObject){
+    return  (-1* (currentObject.at(x).normal[y][0] * org[0] + currentObject.at(x).normal[y][1] * org[1] + currentObject.at(x).normal[y][2] * org[2] + distance(x,y,currentObject)))/t;
+}
+
+//for platform 
+float ray::normalMultiplyOrgin(int count, int t, Walls wallObject){
+    return  (-1* wallObject.platformNormal[count][0] * org[0] + wallObject.platformNormal[count][1] * org[1] + wallObject.platformNormal[count][2] * org[2] + distance(count, wallObject))/t;
+}
+
+
+////Function performs a ray plan test to check if ray intersected object other then sphere
+//for objects
+bool ray::rayPlaneTest(int x, int y, std::vector<ObjectsModel> currentObject){
+    float t = 0;
+    normalMultiplyDirection(x,y,currentObject);
+    t = (currentObject.at(x).normal[y][0] *  norm[0] + currentObject.at(x).normal[y][1] * norm[1] + currentObject.at(x).normal[y][2] * norm[2]);
+    if (t != 0){
+        t = normalMultiplyOrgin(x,y,t, currentObject);
+        //store instesection points if it did
+        inter[0] = org[0] + t*norm[0];
+        inter[1] = org[1] + t*norm[1];
+        inter[2] = org[2] + t*norm[2];
+        
+        return true;
+    }
+    else {
+        return false;
+    }
+    
+}
+
+//for platform 
+bool ray::rayPlaneTest(int count, Walls wallObject){
+    float t = 0;
+    normalMultiplyDirection(count,wallObject);
+    t = (wallObject.platformNormal[count][0] *  norm[0] + wallObject.platformNormal[count][1] * norm[1] + wallObject.platformNormal[count][2] * norm[2]);
+    if (t != 0){
+        t = normalMultiplyOrgin(count,t, wallObject);
+        //store instesection points if it did
+        inter[0] = org[0] + t*norm[0];
+        inter[1] = org[1] + t*norm[1];
+        inter[2] = org[2] + t*norm[2];
+        
+        return true;
+    }
+    else {
+        return false;
+    }
+}

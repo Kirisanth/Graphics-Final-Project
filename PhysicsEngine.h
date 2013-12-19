@@ -13,6 +13,8 @@
 #include <vector>
 #include "Particle.h"
 #include "ObjectsModel.h"
+#include "Walls.h"
+#include "ray.h"
 
 
 
@@ -27,10 +29,14 @@ public:
     Particle ball = Particle();
     //store particle
     //stores all active objects
-    //std::vector<Particle> * ActiveObjects;
+    std::vector<ObjectsModel> ActiveObjects;
+    Walls pinballStruct;
+    ray collision;
     //movement gravity
     //constructor
     PhysicsEngine();
+    
+    bool groundPlane; //forst line test
 
     //methods
     void addObject();
@@ -38,7 +44,7 @@ public:
     void moveParticle();
     //collision detection
 //    void collision(std::vector<Particle>& ball, std::vector<ObjectsModel>& vector);
-    void collision(Particle ball, std::vector<ObjectsModel>& currentObjects, std::vector<ObjectsModel>& wall, std::vector<ObjectsModel>& flippers);
+    void collisionTest();
     //
     
 };
