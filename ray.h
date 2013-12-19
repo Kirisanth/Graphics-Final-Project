@@ -21,6 +21,9 @@ class ray{
     double norm[3];
     double inter[3];
     double objectPos[3];
+    GLdouble newPoint [3];//creates new point
+    GLdouble pNear[3];//depth for z
+    GLdouble pFar[3]; //depth for z
     ray();
     void normalizeDirection();
     bool rayPlaneTest(int x, int y, std::vector<ObjectsModel> currentObject);
@@ -31,6 +34,10 @@ class ray{
     float normalMultiplyOrgin(int count, int t, Walls wallObject);
     double distance(int x , int y, std::vector<ObjectsModel> currentObject);
     double distance(int count, Walls wallObject);
+    
+    //ray casting for objects
+    void Get3DPos(int x, int y, float winz, GLdouble point[3]);
+    void rayCast(float x, float y, std::vector<ObjectsModel> currentObject);
     
     
 };
