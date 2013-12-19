@@ -25,9 +25,6 @@ public:
 
     //constructor
     Particle();
-    Particle(float initialSpeed);
-    
-    
     
     //methods
     void drawSphere();

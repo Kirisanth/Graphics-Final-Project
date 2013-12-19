@@ -37,7 +37,7 @@ float angY = 9*sin(1.05);//roation around Y
 double camera[3] = {0,9,9};//declares camera at position
 double bounceY = 0;
 int x = -1;
-
+PhysicsEngine game;
 
 void Get3DPos(int x, int y, float winz, GLdouble point[3])
 {
@@ -87,7 +87,41 @@ bool rayPlaneTest(int i){
     }
     
 }
-
+void collisionTest(double vecX, double vexY, double vecZ, double posX, double posY, double posZ){
+    ray collision;
+    //store ray orgin
+    newRay.org[0] = posX;
+    newRay.org[1] = posY;
+    newRay.org[2] = posZ;
+    
+    //ray direction is the vector (pFar - pNear)
+    newRay.dir[0] = vecX;
+    newRay.dir[1] = vexY;
+    newRay.dir[2] = vecZ;
+    
+    //normalize direction vector
+    newRay.normalizeDirection();
+    
+    for (int i = 0; i < 6; i++){
+        
+        //undergoe ray plane test
+        groundPlane = rayPlaneTest(i);
+        
+        //update the position of the object to the intersection point
+        if ( groundPlane == true){
+            objectPos[0] = inter[0];
+            objectPos[1] = inter[1];
+            objectPos[2] = inter[2];
+            
+            //check if object is hit between min and max bounds
+            if ((minZ <= objectPos[2] && objectPos[2] <= maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
+                hit1 = true;
+                //break;
+            }
+        }
+    }
+    
+}
 //
 ///* rayCast - takes a mouse x,y, coordinate, and casts a ray through that point
 // *   for subsequent intersection tests with objects.
@@ -332,6 +366,11 @@ void display(void)
     glutSolidCube(0.5);
     glPopMatrix();
     */
+
+//    game.ball = Particle();
+//    Particle red = Particle();
+    game.ball.drawSphere();
+    
     
     glPopMatrix();
     glFlush();
@@ -393,6 +432,7 @@ void processSpecialKeys(int key, int x, int y) {
 
 void idle()
 {
+    game.moveParticle();
     glutPostRedisplay();
 }
 
@@ -447,8 +487,8 @@ int main(int argc, char** argv)
 	//glRotatef(10, 1, 0, 0);
     glutDisplayFunc(display);
 	glutMainLoop();
-    Particle ball;
-    PhysicsEngine test;
-    test.moveParticle(ball);
+//    Particle ball;
+//    PhysicsEngine test;
+//    test.moveParticle(ball);
 	return(0);
 }

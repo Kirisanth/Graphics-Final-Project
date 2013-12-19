@@ -14,64 +14,29 @@ Particle::Particle()
     point2D particlePoint;
     color particleColor;
     particleSize = 0;
-    velY = 0;
+    velY = 10;
     velX = 0;
     velZ = 0;
-    posX = 0;
-    posZ = 0;
-    posY = 0;
+    posX = 1;
+    posZ = 1;
+    posY = 1;
     rotationX = 0;
     rotationY = 0;
     rotationZ = 0;
+    accX = 0;
     accY = -9.8;
+    accY = -1;
     age = 200;
     friction = 1;
     
 };
 
-//particle constructor with initial speed
-Particle::Particle(float initialSpeed)
-{
-    point2D particlePoint;
-    color particleColor;
-    particleSize = 0;
-    velY = 0;
-    velX = 0;
-    velZ = 0;
-    posX = 0;
-    posZ = 0;
-    posY = 0;
-    rotationX = 0;
-    rotationY = 0;
-    rotationZ = 0;
-    accY = -9.8;
-    age = 200;
-    friction = 1;
-    
-};
 
 void Particle::drawSphere(){
-//    //translate and rotate
-//    glPushMatrix();
-//    glTranslatef(currentPositionX, currentPositionY, currentPositionZ);
-//    glRotatef(angle*10, 1, 1, 1);
-//    glColor3f(red, green, blue);
-//    switch (shapeType)
-//    {
-//        case 1:
-//            glutSolidSphere(0.1, 10, 10);
-//            break;
-//        case 2:
-//            glutSolidCube(0.2);
-//            break;
-//        case 3:
-//            glutSolidCube(0.1);
-//            break;
-//        default:
-//            glutWireSphere(0.2, 10, 10);
-//    }
-//    glPopMatrix();
-        glutSolidSphere(0.1, 10, 10);
+    glPushMatrix();
+    glTranslatef(posX, posY, posZ);
+    glutSolidSphere(0.1, 10, 10);
+    glPopMatrix();
 }
 
 //Resposible for handeling movement of particles in terms of velocity and acceleration
