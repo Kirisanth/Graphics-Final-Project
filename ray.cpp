@@ -61,7 +61,7 @@ double ray::distance(int count, Walls wallObject){
 }
 
 //flipper
-double distance(int count, Flipper flipperObject){
+double ray::distance(int count, Flipper flipperObject){
     return -1 * (flipperObject.pointsForNormal[count][0]* flipperObject.flipperNormal[count][0] + flipperObject.pointsForNormal[count][1]* flipperObject.flipperNormal[count][1] + flipperObject.pointsForNormal[count][2]* flipperObject.flipperNormal[count][2]);
 }
 
