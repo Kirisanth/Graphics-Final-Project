@@ -11,6 +11,7 @@
 #include "MathLibrary.h"
 #include "PhysicsEngine.h"
 #include "Particle.h"
+#include "Texture.h"
 #include <math.h>
 #include "ray.h"
 

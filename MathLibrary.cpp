@@ -113,3 +113,60 @@ vec2D Math2d::movePoint (point2D p, vec2D vector)
     vector.y = vector.y + p.y;
     return vector;
 };
+
+Vec3D::Vec3D()
+{
+    xComponent = 1;
+    yComponent = 1;
+    zComponent = 1;
+};
+
+Vec3D::Vec3D(double vX, double vY, double vZ)
+{
+    xComponent = vX;
+    yComponent = vY;
+    zComponent = vZ;
+};
+
+double Math3dhelpers::dot (double vX1, double vY1,double vZ1,double vX2,double vY2,double vZ2)
+{
+    return vX1*vX2 + vY2*vY2 + vZ1*vZ2;
+};
+
+double Math3dhelpers::dot (Vec3D v1, Vec3D v2)
+{
+    return v1.xComponent*v2.xComponent + v1.yComponent*v2.yComponent + v1.zComponent*v2.zComponent;
+};
+
+Vec3D Math3dhelpers::scalarVectorMultiply(double scalar, double vX, double vY, double vZ)
+{
+    Vec3D newVector;
+    
+    newVector.xComponent = vX * scalar;
+    newVector.yComponent = vY * scalar;
+    newVector.zComponent = vZ * scalar;
+    
+    return newVector;
+};
+
+Vec3D Math3dhelpers::vectorSubtract(Vec3D v1,Vec3D v2)
+{
+    Vec3D newVector;
+    newVector.xComponent = v1.xComponent - v2.xComponent;
+    newVector.yComponent = v1.yComponent - v2.yComponent;
+    newVector.zComponent = v1.zComponent - v2.zComponent;
+
+    return newVector;
+};
+
+double Math3dhelpers::distance3D(Vec3D v)
+{
+    return sqrt(v.xComponent*v.xComponent + v.yComponent*v.yComponent + v.zComponent*v.zComponent);
+}
+
+
+
+//Vec3D::Vec3D()
+//{
+//    
+//};

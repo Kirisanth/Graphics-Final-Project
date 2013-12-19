@@ -24,6 +24,29 @@ void PhysicsEngine::moveParticle()
     ball.velX = ball.velX + (ball.accX * time);
     ball.posZ += (ball.velZ * time) + (0.5 * (ball.accZ * (time * time)));
     ball.velX = ball.velX + (ball.accX * time);
+    collisionTest();
+};
+
+Vec3D PhysicsEngine::CalculateBounceVector(double nX,double nY,double nZ,double vX,double vY,double vZ)
+{
+    //initialization
+    Math3dhelpers Math;
+    Vec3D ballMotionVector = Vec3D(vX, vY, vZ);
+    Vec3D normal = Vec3D(nX, nY, nZ);
+    Vec3D newVector;
+    
+    //Step 1
+    double tmpValue = Math.dot(ballMotionVector, normal) / Math.dot(normal, normal);
+    Vec3D uVector = Math.scalarVectorMultiply(tmpValue, nX, nY, nZ);
+    
+    //Step 2
+    Vec3D wVector = Math.vectorSubtract(ballMotionVector, uVector);
+    
+    //Step 3
+    newVector = Math.vectorSubtract(wVector, uVector);
+    
+    return newVector;
+    
 };
 
 //used to test for collisions.
@@ -37,7 +60,7 @@ void PhysicsEngine::collisionTest()
 {
     //iterations through all objects and find if ball is close to objects
     //iteration for objects (cube)
-    
+    Math3dhelpers Math;
     //store ray orgin
     collision.org[0] = ball.posX;
     collision.org[1] = ball.posY;
@@ -69,10 +92,13 @@ void PhysicsEngine::collisionTest()
             float t2 = collision.inter[1] - ball.posY;
             //printf("t2 = %f", t2);
             float t3 = collision.inter[2] - ball.posZ;
-            
+            Vec3D v = Vec3D(t1, t2, t3);
+            double distanceFromCenter = Math.distance3D(v);
             if (t1 < 0.25 && t2 < 0.25 && 0 < t2 && t3 < 0.25){
+//            if (distanceFromCenter < 0.25 && distanceFromCenter > 0){
                 //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
                 printf("WORKS");
+                double normal[] = {ActiveObjects.at(x).normal[y][0],ActiveObjects.at(x).normal[y][1],ActiveObjects.at(x).normal[y][2]};
                 break;
             }
         }
@@ -96,20 +122,36 @@ void PhysicsEngine::collisionTest()
             float t2 = collision.inter[1] - ball.posY;
             //printf("t2 = %f", t2);
             float t3 = collision.inter[2] - ball.posZ;
-            
-            if (t1 < 0.25 && t2 < 0.25 && 0 < t2 && t3 < 0.25){
+//            std::cout << collision.inter[0];
+            printf("%f,", collision.inter[0]);
+            printf("%f,", collision.inter[1]);
+            printf("%f\n", collision.inter[2]);
+//            std::cout << collision.inter[1];
+//            std::cout << collision.inter[2];
+            Vec3D v = Vec3D(t1, t2, t3);
+            double distanceFromCenter = Math.distance3D(v);
+            if (distanceFromCenter < 0.25){
+//            if (t1 < 0.25 && t2 < 0.25 && 0 < t1 && t3 < 0.25){
                 //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
                 printf("WORKS");
+                double normal[] = {pinballStruct.platformNormal[count][0],pinballStruct.platformNormal[count][1],pinballStruct.platformNormal[count][2]};
+                
+                
+                
+                
+                Vec3D bounceVector = CalculateBounceVector(normal[0], normal[1], normal[2], ball.velX, ball.velY, ball.velZ);
+                ball.velX = bounceVector.xComponent;
+                ball.velY = bounceVector.yComponent;
+                ball.velZ = bounceVector.zComponent;
+                //call calculate bounce vector
                 break;
             }
         }
 
     }
-    
-    
-
-
 };
+
+
 
 
 //void collisionTest(double vecX, double vexY, double vecZ, double posX, double posY, double posZ){

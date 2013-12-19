@@ -15,6 +15,7 @@
 #include "ObjectsModel.h"
 #include "Walls.h"
 #include "ray.h"
+#include "MathLibrary.h"
 
 
 
@@ -45,6 +46,7 @@ public:
     //collision detection
 //    void collision(std::vector<Particle>& ball, std::vector<ObjectsModel>& vector);
     void collisionTest();
+    Vec3D CalculateBounceVector(double n1,double n2,double n3,double v1,double v2,double v3);
     //
     
 };
