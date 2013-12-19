@@ -149,6 +149,8 @@ Vec3D Math3dhelpers::scalarVectorMultiply(double scalar, double vX, double vY, d
     return newVector;
 };
 
+
+//Used to subtract vectors
 Vec3D Math3dhelpers::vectorSubtract(Vec3D v1,Vec3D v2)
 {
     Vec3D newVector;
@@ -159,14 +161,43 @@ Vec3D Math3dhelpers::vectorSubtract(Vec3D v1,Vec3D v2)
     return newVector;
 };
 
+//calculates magnitude of vector
 double Math3dhelpers::distance3D(Vec3D v)
 {
     return sqrt(v.xComponent*v.xComponent + v.yComponent*v.yComponent + v.zComponent*v.zComponent);
 }
 
+//Used to create a vector using vertices
+Vec3D Math3dhelpers::createVector(double p1X,double p1Y,double p1Z,double p2X,double p2Y,double p2Z)
+{
+    Vec3D newVector;
+    
+    newVector.xComponent = p1X - p2X;
+    newVector.yComponent = p1Y - p2Y;
+    newVector.zComponent = p1Z - p2Z;
+    
+    return newVector;
+}
 
-
-//Vec3D::Vec3D()
-//{
-//    
-//};
+Vec3D Math3dhelpers::crossProduct(Vec3D u, Vec3D v)
+{
+    Vec3D newVector;
+    
+    //1 is x
+    //2 is y
+    //3 is z
+    //u is vector
+    //v is vector2
+    //u x v
+    
+    newVector.xComponent = u.yComponent*v.zComponent - u.zComponent*v.yComponent;
+    newVector.yComponent = u.zComponent*v.xComponent - u.xComponent*v.zComponent;
+    newVector.zComponent = u.xComponent*v.yComponent - u.yComponent*v.xComponent;
+    
+//    newVector.xComponent = u2*v3 - u3*v2;
+//    newVector.yComponent = u3*v1 - u1*v3;
+//    newVector.zComponent = u1*v2 - u2*v1;
+    
+    return newVector;
+    
+}

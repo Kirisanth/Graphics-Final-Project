@@ -76,6 +76,8 @@ public:
     Vec3D scalarVectorMultiply(double scalar, double vX, double vY, double xZ);
     Vec3D vectorSubtract(Vec3D v1, Vec3D v2);
     double distance3D(Vec3D v);
+    Vec3D createVector(double p1X,double p1Y,double p1Z,double p2X,double p2Y,double p2Z);
+    Vec3D crossProduct(Vec3D v1, Vec3D v2);
 };
 
 #endif /* defined(__GC3AssignmentTwo__MathLibrary__) */
