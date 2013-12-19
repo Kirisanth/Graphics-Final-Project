@@ -60,6 +60,16 @@ double ray::distance(int count, Walls wallObject){
         return -1 * (wallObject.platformPoints[count][0]* wallObject.platformNormal[count][0] + wallObject.platformPoints[count][1]* wallObject.platformNormal[count][1] + wallObject.platformPoints[count][2]* wallObject.platformNormal[count][2]);
 }
 
+//flipper
+double distance(int count, Flipper flipperObject){
+    return -1 * (flipperObject.pointsForNormal[count][0]* flipperObject.flipperNormal[count][0] + flipperObject.pointsForNormal[count][1]* flipperObject.flipperNormal[count][1] + flipperObject.pointsForNormal[count][2]* flipperObject.flipperNormal[count][2]);
+}
+
+
+
+
+
+
 //objects
 float ray::normalMultiplyDirection(int x, int y, std::vector<ObjectsModel> currentObject){
     return (currentObject.at(x).normal[y][0] *  norm[0] + currentObject.at(x).normal[y][1] * norm[1] + currentObject.at(x).normal[y][2] * norm[2]);
@@ -70,6 +80,16 @@ float ray::normalMultiplyDirection(int count, Walls wallObject){
         return (wallObject.platformNormal[count][0] *  norm[0] + wallObject.platformNormal[count][1] * norm[1] + wallObject.platformNormal[count][2] * norm[2]);
 }
 
+//flipper
+float ray::normalMultiplyDirection(int count, Flipper flipperObject){
+        return (flipperObject.flipperNormal[count][0] *  norm[0] + flipperObject.flipperNormal[count][1] * norm[1] + flipperObject.flipperNormal[count][2] * norm[2]);
+}
+
+
+
+
+
+
 //for objects
 float ray::normalMultiplyOrgin(int x, int y, float t,std::vector<ObjectsModel> currentObject){
     return  (-1* (currentObject.at(x).normal[y][0] * org[0] + currentObject.at(x).normal[y][1] * org[1] + currentObject.at(x).normal[y][2] * org[2] + distance(x,y,currentObject)))/t;
@@ -79,6 +99,17 @@ float ray::normalMultiplyOrgin(int x, int y, float t,std::vector<ObjectsModel> c
 float ray::normalMultiplyOrgin(int count, float t, Walls wallObject){
     return  (-1* (wallObject.platformNormal[count][0] * org[0] + wallObject.platformNormal[count][1] * org[1] + wallObject.platformNormal[count][2] * org[2] + distance(count, wallObject)))/t;
 }
+
+//for flipper
+float ray::normalMultiplyOrgin(int count, float t, Flipper flipperObject){
+    return  (-1* (flipperObject.flipperNormal[count][0] * org[0] + flipperObject.flipperNormal[count][1] * org[1] + flipperObject.flipperNormal[count][2] * org[2] + distance(count, flipperObject)))/t;
+}
+
+
+
+
+
+
 
 
 ////Function performs a ray plan test to check if ray intersected object other then sphere
@@ -110,6 +141,25 @@ bool ray::rayPlaneTest(int count, Walls wallObject){
     t = (wallObject.platformNormal[count][0] *  norm[0] + wallObject.platformNormal[count][1] * norm[1] + wallObject.platformNormal[count][2] * norm[2]);
     if (t != 0){
         t = normalMultiplyOrgin(count,t, wallObject);
+        //store instesection points if it did
+        inter[0] = org[0] + t*norm[0];
+        inter[1] = org[1] + t*norm[1];
+        inter[2] = org[2] + t*norm[2];
+        
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+//for flipper
+bool ray::rayPlaneTest(int count, Flipper flipperObject){
+    float t = 0;
+    normalMultiplyDirection(count,flipperObject);
+    t = (flipperObject.flipperNormal[count][0] *  norm[0] + flipperObject.flipperNormal[count][1] * norm[1] + flipperObject.flipperNormal[count][2] * norm[2]);
+    if (t != 0){
+        t = normalMultiplyOrgin(count,t, flipperObject);
         //store instesection points if it did
         inter[0] = org[0] + t*norm[0];
         inter[1] = org[1] + t*norm[1];

@@ -156,6 +156,51 @@ void PhysicsEngine::collisionTest()
         }
 
     }
+    
+    
+    //flipper 
+    for (int count = 0; count < 2; count++){
+        //normalize direction vector
+        collision.normalizeDirection();
+        
+        //undergoe ray plane test
+        groundPlane = collision.rayPlaneTest(count, flipperStruct);
+        //update the position of the object to the intersection point
+        if ( groundPlane == true){
+            collision.objectPos[0] = collision.inter[0];
+            collision.objectPos[1] = collision.inter[1];
+            collision.objectPos[2] = collision.inter[2];
+            //printf("\nOC: %f, %f, %f\n", objectPos[0],objectPos[1],objectPos[2]);
+            //check if object is hit between min and max bounds
+            float t1 = collision.inter[0] - ball.posX;
+            float t2 = collision.inter[1] - ball.posY;
+            //printf("t2 = %f", t2);
+            float t3 = collision.inter[2] - ball.posZ;
+            Vec3D v = Vec3D(t1, t2, t3);
+            double distanceFromCenter = Math.distance3D(v);
+            if (distanceFromCenter < 0.25){
+                //            if (t1 < 0.25 && t2 < 0.25 && 0 < t1 && t3 < 0.25){
+                //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
+                //printf("WORKS");
+                
+                //if(collision.inter[1] > -0.7 && collision.inter[1] <= 4.8){
+                    
+                    double normal[] = {pinballStruct.platformNormal[count][0],pinballStruct.platformNormal[count][1],pinballStruct.platformNormal[count][2]};
+                    
+                    
+                    
+                    
+                    Vec3D bounceVector = CalculateBounceVector(normal[0], normal[1], normal[2], ball.velX, ball.velY, ball.velZ);
+                    ball.velX = bounceVector.xComponent;
+                    ball.velY = bounceVector.yComponent;
+                    ball.velZ = bounceVector.zComponent;
+                    //call calculate bounce vector
+                    break;
+                //}
+            }
+        }
+        
+    }
 };
 
 

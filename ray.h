@@ -13,6 +13,7 @@
 #include <vector>
 #include "ObjectsModel.h"
 #include "Walls.h"
+#include "Flipper.h"
 
 class ray{
     public:
@@ -28,12 +29,20 @@ class ray{
     void normalizeDirection();
     bool rayPlaneTest(int x, int y, std::vector<ObjectsModel> currentObject);
     bool rayPlaneTest(int count, Walls wallObject);
+    bool rayPlaneTest(int count, Flipper flipperObject);
+    
+    
     float normalMultiplyDirection(int x, int y, std::vector<ObjectsModel> currentObject);
     float normalMultiplyDirection(int count, Walls wallObject);
+    float normalMultiplyDirection(int count, Flipper flipperObject);
+    
     float normalMultiplyOrgin(int x, int y, float t, std::vector<ObjectsModel> currentObject);
     float normalMultiplyOrgin(int count, float t, Walls wallObject);
+    float normalMultiplyOrgin(int count, float t, Flipper flipperObject);
+    
     double distance(int x , int y, std::vector<ObjectsModel> currentObject);
     double distance(int count, Walls wallObject);
+    double distance(int count, Flipper flipperObject);
     
     //ray casting for objects
     void Get3DPos(int x, int y, float winz, GLdouble point[3]);

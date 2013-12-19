@@ -17,6 +17,7 @@
 #include "ray.h"
 #include "MathLibrary.h"
 #include "Points.h"
+#include "Flipper.h"
 
 
 
@@ -33,6 +34,7 @@ public:
     //stores all active objects
     std::vector<ObjectsModel> ActiveObjects;
     Walls pinballStruct;
+    Flipper flipperStruct;
     ray collision;
     Points points;
     //movement gravity

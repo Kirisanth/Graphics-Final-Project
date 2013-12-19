@@ -29,8 +29,9 @@ public:
 //    double platformPoints[6][3] = {{-2.5,-0.7,2.5}, {2.5,4.7,0},{2.5,4.7,2.5},{2.5,4.7,0},{2.5,4.7,2.5}};
     
     float color[2][3] = {{0.3, 0, 1},{0.3, 0, 1}};
-    float vertex[2][4][3] = {{{0.4,movFlip1,2.5},{2.5,-0.7,2.5},{2.5,-0.7,0},{0.4,movFlip1,0}},{{-0.4,movFlip2,2.5},{-2.5,-0.7,2.5},{-2.5,-0.7,0},{-0.4,movFlip2,0}}};
-    float flipperNormal[2][3];
+    double vertex[2][4][3] = {{{0.4,movFlip1,2.5},{2.5,-0.7,2.5},{2.5,-0.7,0},{0.4,movFlip1,0}},{{-0.4,movFlip2,2.5},{-2.5,-0.7,2.5},{-2.5,-0.7,0},{-0.4,movFlip2,0}}};
+    double flipperNormal[2][3];
+    double pointsForNormal[2][3] = {{vertex[0][0][0], vertex[0][0][1], vertex[0][0][2]},{vertex[1][0][0], vertex[1][0][1], vertex[1][0][2]}};
     
     
     
