@@ -31,7 +31,7 @@ class ray{
     float normalMultiplyDirection(int x, int y, std::vector<ObjectsModel> currentObject);
     float normalMultiplyDirection(int count, Walls wallObject);
     float normalMultiplyOrgin(int x, int y, float t, std::vector<ObjectsModel> currentObject);
-    float normalMultiplyOrgin(int count, int t, Walls wallObject);
+    float normalMultiplyOrgin(int count, float t, Walls wallObject);
     double distance(int x , int y, std::vector<ObjectsModel> currentObject);
     double distance(int count, Walls wallObject);
     

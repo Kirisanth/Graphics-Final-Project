@@ -76,8 +76,8 @@ float ray::normalMultiplyOrgin(int x, int y, float t,std::vector<ObjectsModel> c
 }
 
 //for platform 
-float ray::normalMultiplyOrgin(int count, int t, Walls wallObject){
-    return  (-1* wallObject.platformNormal[count][0] * org[0] + wallObject.platformNormal[count][1] * org[1] + wallObject.platformNormal[count][2] * org[2] + distance(count, wallObject))/t;
+float ray::normalMultiplyOrgin(int count, float t, Walls wallObject){
+    return  (-1* (wallObject.platformNormal[count][0] * org[0] + wallObject.platformNormal[count][1] * org[1] + wallObject.platformNormal[count][2] * org[2] + distance(count, wallObject)))/t;
 }
 
 
