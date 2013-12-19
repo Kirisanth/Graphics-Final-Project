@@ -14,9 +14,9 @@ Particle::Particle()
     point2D particlePoint;
     color particleColor;
     particleSize = 0;
-    velY = 0;
-    velX = 0;
-    velZ = 10;
+    velY = 111;
+    velX = 110;
+    velZ = 0;
     posX = 1;
     posZ = 1;
     posY = 1;
@@ -35,6 +35,7 @@ Particle::Particle()
 void Particle::drawSphere(){
     glPushMatrix();
     glTranslatef(posX, posY, posZ);
+    glColor3f(1,1,1);
     glutSolidSphere(0.1, 10, 10);
     glPopMatrix();
 }

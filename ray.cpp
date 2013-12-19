@@ -24,6 +24,22 @@ ray::ray(){
     
 };
 
+void ray::Get3DPos(int x, int y, float winz, GLdouble point[3])
+{
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	
+	//get the matrices
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetIntegerv( GL_VIEWPORT, viewport );
+    
+	//"un-project" the 2D point giving the 3D position corresponding to the provided depth (winz)
+	gluUnProject( (float)x, (float)(viewport[3]-y), winz, modelview, projection, viewport, &point[0], &point[1], &point[2]);
+    
+}
+
 void ray::normalizeDirection(){
     
     float length;
@@ -60,8 +76,8 @@ float ray::normalMultiplyOrgin(int x, int y, float t,std::vector<ObjectsModel> c
 }
 
 //for platform 
-float ray::normalMultiplyOrgin(int count, int t, Walls wallObject){
-    return  (-1* wallObject.platformNormal[count][0] * org[0] + wallObject.platformNormal[count][1] * org[1] + wallObject.platformNormal[count][2] * org[2] + distance(count, wallObject))/t;
+float ray::normalMultiplyOrgin(int count, float t, Walls wallObject){
+    return  (-1* (wallObject.platformNormal[count][0] * org[0] + wallObject.platformNormal[count][1] * org[1] + wallObject.platformNormal[count][2] * org[2] + distance(count, wallObject)))/t;
 }
 
 
@@ -71,6 +87,7 @@ bool ray::rayPlaneTest(int x, int y, std::vector<ObjectsModel> currentObject){
     float t = 0;
     normalMultiplyDirection(x,y,currentObject);
     t = (currentObject.at(x).normal[y][0] *  norm[0] + currentObject.at(x).normal[y][1] * norm[1] + currentObject.at(x).normal[y][2] * norm[2]);
+    //printf("%f",currentObject.at(x).normal[y][0]);
     if (t != 0){
         t = normalMultiplyOrgin(x,y,t, currentObject);
         //store instesection points if it did
@@ -104,3 +121,7 @@ bool ray::rayPlaneTest(int count, Walls wallObject){
         return false;
     }
 }
+
+
+
+

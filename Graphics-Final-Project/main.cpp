@@ -132,7 +132,8 @@ void rayCast(float x, float y)
 {
     //count through number of objects to perform tests on each one
         //count through number of planes of each object to perform test on each one
-        for (int i = 0; i < 2; i++){
+        for (int count1 = 0; count1 < game.ActiveObjects.size(); count1++){
+            for(int count2 = 0; count2 < 6; count2++){
             
             Get3DPos(x, y, 0.0, pNear);
             Get3DPos(x, y, 1.0, pFar);
@@ -147,35 +148,59 @@ void rayCast(float x, float y)
             newRay.dir[1] = pFar[1] - pNear[1];
             newRay.dir[2] = pFar[2] - pNear[2];
             
-            //normalize direction vector
             newRay.normalizeDirection();
             
-            //undergoe ray plane test
-            groundPlane = rayPlaneTest(i);
+            groundPlane = newRay.rayPlaneTest(count1, count2, game.ActiveObjects);
+            //printf("x = %f, y = %f, z = %f",newRay.objectPos[0], newRay.objectPos[1], newRay.objectPos[2]);
             
             //update the position of the object to the intersection point
-            if ( groundPlane == true){
-                objectPos[0] = inter[0];
-                objectPos[1] = inter[1];
-                objectPos[2] = inter[2];
-                
-                //check if object is hit between min and max bounds
-                if ((minZ <= objectPos[2] && objectPos[2] <= maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
-                    hit1 = true;
-                    break;
+            	//update the position of the object to the intersection point
+                if ( groundPlane == true){
+                    printf("x = %f, y = %f, z = %f",newRay.inter[0], newRay.inter[1], newRay.inter[2]);
+                    //check if object is hit between min and max bounds
+                    if ((game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateX < newRay.inter[0] && newRay.inter[0] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateX && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateZ < newRay.inter[2] && newRay.inter[2] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateZ && inter[1] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateY && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateY < newRay.inter[1])){
+                        
+                        game.ActiveObjects.at(count1).hit = true;
+                        //check to see right click to delete object
+                        break;
+                    }
+                    //return false hit else wise
+                    else{
+                        game.ActiveObjects.at(count1).hit = false;
+                    }
+                    
+                    
                 }
-                if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && minX == objectPos[0]){
-                    hit2 = true;
-                    break;
+            }   //break out of cycle of object 
+            if(game.ActiveObjects.at(count1).hit == true){
+                for(int z = 0; z < game.ActiveObjects.size(); z++){
+                    if(z != count1){
+                        game.ActiveObjects.at(z).hit = false;
+                    }
                 }
-                else{
-                    hit1 = false;
-                    hit2 = false;
-    
-                }
-     
+                break;
             }
         }
+//            if ( groundPlane == true){
+//                
+//                //check if object is hit between min and max bounds
+//                if ((minZ <= objectPos[2] && objectPos[2] <= maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
+//                    hit1 = true;
+//                    break;
+//                }
+//                if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && minX == objectPos[0]){
+//                    hit2 = true;
+//                    break;
+//                }
+//                else{
+//                    hit1 = false;
+//                    hit2 = false;
+//    
+//                }
+//     
+//            }
+        //}
+        //}
 }
 
 void drawWall1(){
@@ -328,6 +353,11 @@ void display(void)
     else{
         transparentWall1 = 1;
         transparentWall2 = 1;
+    }
+    
+    for (int x = 0; x < 5; x++){
+        game.ActiveObjects.at(x).drawObjects();
+        
     }
     
     
