@@ -296,6 +296,7 @@ void display(void)
     glLoadIdentity();
     gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, orientation[0], orientation[1], orientation[2]);
     
+    glutSolidCube(0.5);
     //intersection point for ray casting
     /*
     glPointSize(10);
@@ -312,7 +313,7 @@ void display(void)
     //glRotatef(45, 1, 0, 0);
     //glTranslatef(-1, 7.1 + bounceY, -.5);
     
-    //drawAxis();
+    drawAxis();
     bool drawWall1First;
     if ((-9<camera[0] && camera[0] < -6) || hit2 == true){
         transparentWall1 = 0.2;
@@ -459,6 +460,14 @@ static void init(void)
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glShadeModel (GL_FLAT);
+    
+    
+    for (int x = 0; x < 5; x++){
+        ObjectsModel newObject;
+        game.ActiveObjects.push_back(newObject);
+    
+    }
+    
 }
 
 

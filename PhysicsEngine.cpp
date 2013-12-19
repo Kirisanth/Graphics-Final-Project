@@ -33,21 +33,82 @@ void PhysicsEngine::moveParticle()
 //Parameter 2: vector block objects in pin ball machine (cube)
 //Parameter 3: vector walls of pin ball machine
 //Parameter 4: vector flippers
-void PhysicsEngine::collision(Particle ball, std::vector<ObjectsModel>& currentObjects, std::vector<ObjectsModel>& wall, std::vector<ObjectsModel>& flippers)
+void PhysicsEngine::collisionTest()
 {
     //iterations through all objects and find if ball is close to objects
     //iteration for objects (cube)
-    for (int i=0; i < currentObjects.size(); i++) {
-        currentObjects.at(i).posX = 0;
+    
+    //store ray orgin
+    collision.org[0] = ball.posX;
+    collision.org[1] = ball.posY;
+    collision.org[2] = ball.posZ;
+    
+    //ray direction is the vector (pFar - pNear)
+    collision.dir[0] = ball.velX;
+    collision.dir[1] = ball.velY;
+    collision.dir[2] = ball.velZ;
+    
+    //for objects
+    for (int x=0; x < ActiveObjects.size(); x++) {
+        for(int y = 0; y < 6; y++){
+        
+        //normalize direction vector
+        collision.normalizeDirection();
+        
+        //undergoe ray plane test
+        groundPlane = collision.rayPlaneTest(x, y, ActiveObjects);
+        
+        //update the position of the object to the intersection point
+        if ( groundPlane == true){
+            collision.objectPos[0] = collision.inter[0];
+            collision.objectPos[1] = collision.inter[1];
+            collision.objectPos[2] = collision.inter[2];
+            //printf("\nOC: %f, %f, %f\n", objectPos[0],objectPos[1],objectPos[2]);
+            //check if object is hit between min and max bounds
+            float t1 = collision.inter[0] - ball.posX;
+            float t2 = collision.inter[1] - ball.posY;
+            //printf("t2 = %f", t2);
+            float t3 = collision.inter[2] - ball.posZ;
+            
+            if (t1 < 0.25 && t2 < 0.25 && 0 < t2 && t3 < 0.25){
+                //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
+                printf("WORKS");
+                break;
+            }
+        }
+        }
     }
-    //iteration for walls
-    for (int i=0; i < wall.size(); i++) {
-        wall.at(i).posX = 0;
+    
+    for (int count = 0; count < 5; count++){
+        //normalize direction vector
+        collision.normalizeDirection();
+        
+        //undergoe ray plane test
+        groundPlane = collision.rayPlaneTest(count, pinballStruct);
+        //update the position of the object to the intersection point
+        if ( groundPlane == true){
+            collision.objectPos[0] = collision.inter[0];
+            collision.objectPos[1] = collision.inter[1];
+            collision.objectPos[2] = collision.inter[2];
+            //printf("\nOC: %f, %f, %f\n", objectPos[0],objectPos[1],objectPos[2]);
+            //check if object is hit between min and max bounds
+            float t1 = collision.inter[0] - ball.posX;
+            float t2 = collision.inter[1] - ball.posY;
+            //printf("t2 = %f", t2);
+            float t3 = collision.inter[2] - ball.posZ;
+            
+            if (t1 < 0.25 && t2 < 0.25 && 0 < t2 && t3 < 0.25){
+                //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
+                printf("WORKS");
+                break;
+            }
+        }
+
     }
-    //iteration for flippers
-    for (int i=0; i < flippers.size(); i++) {
-        flippers.at(i).posZ = 0;
-    }
+    
+    
+
+
 };
 
 

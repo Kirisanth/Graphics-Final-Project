@@ -10,14 +10,29 @@
 #define __Graphics_Final_Project__ray__
 
 #include <iostream>
+#include <vector>
+#include "ObjectsModel.h"
+#include "Walls.h"
 
 class ray{
     public:
     double org[3];
     double dir[3];
     double norm[3];
+    double inter[3];
+    double objectPos[3];
     ray();
     void normalizeDirection();
+    bool rayPlaneTest(int x, int y, std::vector<ObjectsModel> currentObject);
+    bool rayPlaneTest(int count, Walls wallObject);
+    float normalMultiplyDirection(int x, int y, std::vector<ObjectsModel> currentObject);
+    float normalMultiplyDirection(int count, Walls wallObject);
+    float normalMultiplyOrgin(int x, int y, float t, std::vector<ObjectsModel> currentObject);
+    float normalMultiplyOrgin(int count, int t, Walls wallObject);
+    double distance(int x , int y, std::vector<ObjectsModel> currentObject);
+    double distance(int count, Walls wallObject);
+    
+    
 };
 
 #endif /* defined(__Graphics_Final_Project__ray__) */

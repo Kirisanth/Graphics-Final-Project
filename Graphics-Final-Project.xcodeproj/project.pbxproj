@@ -16,6 +16,7 @@
 		3C7B1618186145DF0067F8CD /* ObjectsModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B1616186145DF0067F8CD /* ObjectsModel.cpp */; };
 		3C7B161B1862316A0067F8CD /* PhysicsEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B16191862316A0067F8CD /* PhysicsEngine.cpp */; };
 		6C4A0D901850690B0098D1DC /* ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C4A0D8E1850690B0098D1DC /* ray.cpp */; };
+		6C80DDA4186291220052225A /* Walls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C80DDA2186291220052225A /* Walls.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,8 @@
 		3C7B161A1862316A0067F8CD /* PhysicsEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsEngine.h; sourceTree = "<group>"; };
 		6C4A0D8E1850690B0098D1DC /* ray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ray.cpp; sourceTree = "<group>"; };
 		6C4A0D8F1850690B0098D1DC /* ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray.h; sourceTree = "<group>"; };
+		6C80DDA2186291220052225A /* Walls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Walls.cpp; sourceTree = "<group>"; };
+		6C80DDA3186291220052225A /* Walls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Walls.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,8 @@
 				3C7B161A1862316A0067F8CD /* PhysicsEngine.h */,
 				3C7B1616186145DF0067F8CD /* ObjectsModel.cpp */,
 				3C7B1617186145DF0067F8CD /* ObjectsModel.h */,
+				6C80DDA2186291220052225A /* Walls.cpp */,
+				6C80DDA3186291220052225A /* Walls.h */,
 				6C4A0D8E1850690B0098D1DC /* ray.cpp */,
 				6C4A0D8F1850690B0098D1DC /* ray.h */,
 				3C351979184A8CBC00F6C6A2 /* main.cpp */,
@@ -156,6 +161,7 @@
 				3C7B161B1862316A0067F8CD /* PhysicsEngine.cpp in Sources */,
 				3C351984184A912700F6C6A2 /* MathLibrary.cpp in Sources */,
 				6C4A0D901850690B0098D1DC /* ray.cpp in Sources */,
+				6C80DDA4186291220052225A /* Walls.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
