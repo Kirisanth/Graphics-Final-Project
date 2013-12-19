@@ -57,5 +57,25 @@ public:
     
 };
 
+class Vec3D
+{
+public:
+    double xComponent;
+    double yComponent;
+    double zComponent;
+    Vec3D();
+    Vec3D(double x, double y, double z);
+    
+};
+
+class Math3dhelpers
+{
+public:
+    double dot (double vX1, double vY1,double vZ1,double vX2,double vY2,double vZ2);
+    double dot (Vec3D v1,Vec3D v2);
+    Vec3D scalarVectorMultiply(double scalar, double vX, double vY, double xZ);
+    Vec3D vectorSubtract(Vec3D v1, Vec3D v2);
+    double distance3D(Vec3D v);
+};
 
 #endif /* defined(__GC3AssignmentTwo__MathLibrary__) */

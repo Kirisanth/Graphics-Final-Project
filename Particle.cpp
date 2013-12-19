@@ -14,9 +14,9 @@ Particle::Particle()
     point2D particlePoint;
     color particleColor;
     particleSize = 0;
-    velY = 10;
+    velY = 0;
     velX = 0;
-    velZ = 0;
+    velZ = 10;
     posX = 1;
     posZ = 1;
     posY = 1;
