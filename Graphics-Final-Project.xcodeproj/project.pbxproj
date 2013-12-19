@@ -18,6 +18,7 @@
 		3C7B16211862A8710067F8CD /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B161F1862A8710067F8CD /* Texture.cpp */; };
 		6C4A0D901850690B0098D1DC /* ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C4A0D8E1850690B0098D1DC /* ray.cpp */; };
 		6C80DDA4186291220052225A /* Walls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C80DDA2186291220052225A /* Walls.cpp */; };
+		6CAEB7B818639FDF00421EAB /* Points.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CAEB7B618639FDF00421EAB /* Points.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +54,8 @@
 		6C4A0D8F1850690B0098D1DC /* ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray.h; sourceTree = "<group>"; };
 		6C80DDA2186291220052225A /* Walls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Walls.cpp; sourceTree = "<group>"; };
 		6C80DDA3186291220052225A /* Walls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Walls.h; sourceTree = "<group>"; };
+		6CAEB7B618639FDF00421EAB /* Points.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Points.cpp; sourceTree = "<group>"; };
+		6CAEB7B718639FDF00421EAB /* Points.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Points.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +91,8 @@
 				3C351979184A8CBC00F6C6A2 /* main.cpp */,
 				3C7B161F1862A8710067F8CD /* Texture.cpp */,
 				3C7B16201862A8710067F8CD /* Texture.h */,
+				6CAEB7B618639FDF00421EAB /* Points.cpp */,
+				6CAEB7B718639FDF00421EAB /* Points.h */,
 				3C351978184A8CBC00F6C6A2 /* Graphics-Final-Project */,
 				3C351977184A8CBC00F6C6A2 /* Products */,
 			);
@@ -168,6 +173,7 @@
 				3C7B16211862A8710067F8CD /* Texture.cpp in Sources */,
 				6C4A0D901850690B0098D1DC /* ray.cpp in Sources */,
 				6C80DDA4186291220052225A /* Walls.cpp in Sources */,
+				6CAEB7B818639FDF00421EAB /* Points.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

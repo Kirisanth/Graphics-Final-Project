@@ -106,6 +106,7 @@ void PhysicsEngine::collisionTest()
                 ball.velX = bounceVector.xComponent;
                 ball.velY = bounceVector.yComponent;
                 ball.velZ = bounceVector.zComponent;
+                points.setPoints(0.1);
                 break;
                       }
             }
@@ -137,7 +138,7 @@ void PhysicsEngine::collisionTest()
                 //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
                 //printf("WORKS");
                 
-                if(collision.inter[1] > 0){
+                if(collision.inter[1] > -0.7 && collision.inter[1] <= 4.8){
                 
                 double normal[] = {pinballStruct.platformNormal[count][0],pinballStruct.platformNormal[count][1],pinballStruct.platformNormal[count][2]};
                 

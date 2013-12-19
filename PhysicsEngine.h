@@ -16,6 +16,7 @@
 #include "Walls.h"
 #include "ray.h"
 #include "MathLibrary.h"
+#include "Points.h"
 
 
 
@@ -33,6 +34,7 @@ public:
     std::vector<ObjectsModel> ActiveObjects;
     Walls pinballStruct;
     ray collision;
+    Points points;
     //movement gravity
     //constructor
     PhysicsEngine();

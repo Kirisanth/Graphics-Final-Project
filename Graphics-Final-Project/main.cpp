@@ -14,6 +14,7 @@
 #include "Texture.h"
 #include <math.h>
 #include "ray.h"
+//#include "Points.h"
 
 
 
@@ -39,6 +40,7 @@ double camera[3] = {0,9,9};//declares camera at position
 double bounceY = 0;
 int x = -1;
 PhysicsEngine game;
+//Points points;
 
 void Get3DPos(int x, int y, float winz, GLdouble point[3])
 {
@@ -56,73 +58,7 @@ void Get3DPos(int x, int y, float winz, GLdouble point[3])
     
 }
 
-double distance(int i){
-    return -1 * (platformPoints[i][0]*platformNormal[i][0] + platformPoints[i][1]*platformNormal[i][1] + platformPoints[i][2]*platformNormal[i][2]);
-    
-}
 
-float normalMultiplyDirection(int i){
-    return (platformNormal[i][0] *  newRay.norm[0] + platformNormal[i][1] * newRay.norm[1] + platformNormal[i][2] * newRay.norm[2]);
-}
-
-float normalMultiplyOrgin(int i, float t){
-    return  (-1* (platformNormal[i][0] * newRay.org[0] + platformNormal[i][1] * newRay.org[1] + platformNormal[i][2] * newRay.org[2] + distance(i)))/t;
-}
-
-////Function performs a ray plan test to check if ray intersected object other then sphere
-bool rayPlaneTest(int i){
-    float t = 0;
-    normalMultiplyDirection(i);
-    t = (platformNormal[i][0] *  newRay.norm[0] + platformNormal[i][1] * newRay.norm[1] + platformNormal[i][2] * newRay.norm[2]);
-    if (t != 0){
-        t = normalMultiplyOrgin(i, t);
-        //store instesection points if it did
-        inter[0] = newRay.org[0] + t*newRay.norm[0];
-        inter[1] = newRay.org[1] + t*newRay.norm[1];
-        inter[2] = newRay.org[2] + t*newRay.norm[2];
-
-        return true;
-    }
-    else {
-        return false;
-    }
-    
-}
-void collisionTest(double vecX, double vexY, double vecZ, double posX, double posY, double posZ){
-    ray collision;
-    //store ray orgin
-    newRay.org[0] = posX;
-    newRay.org[1] = posY;
-    newRay.org[2] = posZ;
-    
-    //ray direction is the vector (pFar - pNear)
-    newRay.dir[0] = vecX;
-    newRay.dir[1] = vexY;
-    newRay.dir[2] = vecZ;
-    
-    //normalize direction vector
-    newRay.normalizeDirection();
-    
-    for (int i = 0; i < 6; i++){
-        
-        //undergoe ray plane test
-        groundPlane = rayPlaneTest(i);
-        
-        //update the position of the object to the intersection point
-        if ( groundPlane == true){
-            objectPos[0] = inter[0];
-            objectPos[1] = inter[1];
-            objectPos[2] = inter[2];
-            
-            //check if object is hit between min and max bounds
-            if ((minZ <= objectPos[2] && objectPos[2] <= maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
-                hit1 = true;
-                //break;
-            }
-        }
-    }
-    
-}
 //
 ///* rayCast - takes a mouse x,y, coordinate, and casts a ray through that point
 // *   for subsequent intersection tests with objects.
@@ -181,26 +117,6 @@ void rayCast(float x, float y)
                 break;
             }
         }
-//            if ( groundPlane == true){
-//                
-//                //check if object is hit between min and max bounds
-//                if ((minZ <= objectPos[2] && objectPos[2] <= maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && maxX == objectPos[0]){
-//                    hit1 = true;
-//                    break;
-//                }
-//                if (( minZ < objectPos[2] && objectPos[2] < maxZ && objectPos[1] <= maxY && minY <= objectPos[1]) && minX == objectPos[0]){
-//                    hit2 = true;
-//                    break;
-//                }
-//                else{
-//                    hit1 = false;
-//                    hit2 = false;
-//    
-//                }
-//     
-//            }
-        //}
-        //}
 }
 
 void drawWall1(){
@@ -322,7 +238,7 @@ void display(void)
     glLoadIdentity();
     gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, orientation[0], orientation[1], orientation[2]);
     
-    glutSolidCube(0.5);
+    
     //intersection point for ray casting
     /*
     glPointSize(10);
@@ -332,14 +248,14 @@ void display(void)
     */
     
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    Points();
+    //Points();
     glPushMatrix();
     
     //for first person camera 
     //glRotatef(45, 1, 0, 0);
-    //glTranslatef(-1, 7.1 + bounceY, -.5);
+    //glTranslatef(-game.ball.posX, 12.5 - game.ball.posY, -game.ball.posZ);
     
-    drawAxis();
+    //drawAxis();
     bool drawWall1First;
     if ((-9<camera[0] && camera[0] < -6) || hit2 == true){
         transparentWall1 = 0.2;
@@ -359,6 +275,7 @@ void display(void)
         game.ActiveObjects.at(x).drawObjects();
         
     }
+    game.ball.drawSphere();
     
     
     
@@ -386,22 +303,6 @@ void display(void)
     else{
         pinballStruct(-2,-2,drawWall1First);
     }
-    
-    //For first person camera
-    /*
-    glPushMatrix();
-    if (bounceY >= 4.7)
-        bounceY = 0;
-    else if(bounceY >= 0)
-        bounceY = bounceY + 0.1;
-    glTranslatef(0, bounceY,0);
-    glutSolidCube(0.5);
-    glPopMatrix();
-    */
-
-//    game.ball = Particle();
-//    Particle red = Particle();
-    game.ball.drawSphere();
     
     
     glPopMatrix();
@@ -432,6 +333,71 @@ void kbd(unsigned char key, int x, int y)
     if(key == 's' && key == 'a'){
         flip1 = true;
         flip2 = true;
+    }
+    if (key == '1'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectType = 1;
+            }
+        }
+    }
+    if (key == '2'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectType = 2;
+            }
+        }
+    }
+    if (key == '3'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectType = 3;
+            }
+        }
+    }
+    if (key == 'x'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectTranslateX(0.1);
+            }
+        }
+    }
+    if (key == 'X'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectTranslateX(-0.1);
+            }
+        }
+    }
+    
+    if (key == 'y'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectTranslateY(0.1);
+            }
+        }
+    }
+    if (key == 'Y'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectTranslateY(-0.1);
+            }
+        }
+    }
+    
+    if (key == 'z'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectTranslateZ(0.1);
+            }
+        }
+    }
+    if (key == 'Z'){
+        for (int count = 0; count < game.ActiveObjects.size();count++){
+            if (game.ActiveObjects.at(count).hit == true){
+                game.ActiveObjects.at(count).objectTranslateZ(-0.1);
+            }
+        }
     }
 
 }

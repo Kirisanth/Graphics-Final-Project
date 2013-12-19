@@ -30,7 +30,10 @@ public:
     void drawObjects();
     double min = -0.25, max  = 0.25;
     bool hit;
-    
+    int objectType = 1;
+    void objectTranslateX(double x);
+    void objectTranslateY(double y);
+    void objectTranslateZ(double z);
     //cube vertices
 
     //constructor
