@@ -72,15 +72,15 @@ void setFlipperColor()
 
 void drawFlipper()
 {
-    glColor3f(0.3, 0, 1);
-    glVertex3f(0.4,movFlip1,2.5);
-    glVertex3f(2.5,-0.7,2.5);
-    glVertex3f(2.5,-0.7,0);
-    glVertex3f(0.4,movFlip1,0);
-    
-    glColor3f(0.3, 0, 1);
-    glVertex3f(-0.4,movFlip2,2.5);
-    glVertex3f(-2.5,-0.7,2.5);
-    glVertex3f(-2.5,-0.7,0);
-    glVertex3f(-0.4,movFlip2,0);
+//    glColor3f(0.3, 0, 1);
+//    glVertex3f(0.4,movFlip1,2.5);
+//    glVertex3f(2.5,-0.7,2.5);
+//    glVertex3f(2.5,-0.7,0);
+//    glVertex3f(0.4,movFlip1,0);
+//    
+//    glColor3f(0.3, 0, 1);
+//    glVertex3f(-0.4,movFlip2,2.5);
+//    glVertex3f(-2.5,-0.7,2.5);
+//    glVertex3f(-2.5,-0.7,0);
+//    glVertex3f(-0.4,movFlip2,0);
 }

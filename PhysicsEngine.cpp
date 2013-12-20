@@ -106,7 +106,7 @@ void PhysicsEngine::collisionTest()
                 ball.velX = bounceVector.xComponent;
                 ball.velY = bounceVector.yComponent;
                 ball.velZ = bounceVector.zComponent;
-                points.setPoints(0.1);
+                points.setPoints(10);
                 break;
                       }
             }

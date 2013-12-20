@@ -275,6 +275,7 @@ void display(void)
         game.ActiveObjects.at(x).drawObjects();
         
     }
+    game.points.dispalyPoints();
     game.ball.drawSphere();
     
     

@@ -9,24 +9,36 @@
 #include "Points.h"
 
 Points::Points(){
-    //static int points = 0;
+    points = 0;
 };
 
 void Points::setPoints(int x){
     points = points +x;
 }
 
-void dispalyPoints(){
+void Points::dispalyPoints(){
+    
+    glPushMatrix();
+    char *b= "3GC3 Pinball 3D";
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos3f( -2.0f , 6.0f ,0 );
+    for(int i = 0; b[i] != '\0'; i++)
+        glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , b[i]);
+    glPopMatrix();
+    
+    glPushMatrix();
     char *a= "Points: ";
     glColor3f(1.0f, 1.0f, 1.0f);
     glRasterPos3f( 2.0f , -1.0f ,4.0f );
     for(int i = 0; a[i] != '\0'; i++)
         glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , a[i]);
     
-    std::string s = std::to_string(4000);
+    
+    std::string s = std::to_string(points);
     char const *pchar = s.c_str();
     for (int count = 0; pchar[count] != '\0'; count++){
         glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , pchar[count]);
     }
+    glPopMatrix();
 }
 
