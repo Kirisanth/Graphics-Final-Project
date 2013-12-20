@@ -162,17 +162,21 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     glVertex3f(-2.5,4.7,0);
     
     //flippers
-    glColor3f(0.3, 0, 1);
-    glVertex3f(0.4,movFlip1,2.5);
-    glVertex3f(2.5,-0.7,2.5);
-    glVertex3f(2.5,-0.7,0);
-    glVertex3f(0.4,movFlip1,0);
-    
-    glColor3f(0.3, 0, 1);
-    glVertex3f(-0.4,movFlip2,2.5);
-    glVertex3f(-2.5,-0.7,2.5);
-    glVertex3f(-2.5,-0.7,0);
-    glVertex3f(-0.4,movFlip2,0);
+//    glColor3f(0.3, 0, 1);
+//    glVertex3f(0.4,movFlip1,2.5);
+//    glVertex3f(2.5,-0.7,2.5);
+//    glVertex3f(2.5,-0.7,0);
+//    glVertex3f(0.4,movFlip1,0);
+//    
+//    glColor3f(0.3, 0, 1);
+//    glVertex3f(-0.4,movFlip2,2.5);
+//    glVertex3f(-2.5,-0.7,2.5);
+//    glVertex3f(-2.5,-0.7,0);
+//    glVertex3f(-0.4,movFlip2,0);
+    game.flipperStruct.movFlip1 = movFlip1;
+    std::cout << movFlip1;
+    game.flipperStruct.movFlip2 = movFlip2;
+    game.flipperStruct.RenderFlippers();
     
     //back
     glColor3f(0.3, 0.3, 0.3);

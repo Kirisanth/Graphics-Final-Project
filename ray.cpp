@@ -158,7 +158,6 @@ bool ray::rayPlaneTest(int count, Flipper flipperObject){
     float t = 0;
     normalMultiplyDirection(count,flipperObject);
     t = (flipperObject.flipperNormal[count][0] *  norm[0] + flipperObject.flipperNormal[count][1] * norm[1] + flipperObject.flipperNormal[count][2] * norm[2]);
-    std::cout << t;
     if (t != 0){
         t = normalMultiplyOrgin(count,t, flipperObject);
         //store instesection points if it did
