@@ -33,6 +33,7 @@ Texture textureObeject;
 bool cameraParticlePosition = false;
 bool startStop = true;
 bool lightswitch = true;
+bool gameOver = false;
 
 void Get3DPos(int x, int y, float winz, GLdouble point[3])
 {
@@ -377,9 +378,11 @@ void display(void)
     else{
         pinballStruct(-2,-2,drawWall1First);
     }
-    
-    
     glPopMatrix();
+    
+    if(gameOver == true){
+        game.points.gameOver();
+    }
     glFlush();
     glutSwapBuffers();
     glutPostRedisplay();
@@ -393,11 +396,7 @@ void kbd(unsigned char key, int x, int y)
 	{
 		exit(0);
 	}
-    //resets particles to normal mode
-    if(key == 'r'){
-        
-    }
-
+    
     if(key == 's'){
         flip1 = true;
     }
@@ -414,6 +413,7 @@ void kbd(unsigned char key, int x, int y)
                 game.ActiveObjects.at(count).objectType = 1;
             }
         }
+        printf("Cube selected\n");
     }
     if (key == '2'){
         for (int count = 0; count < game.ActiveObjects.size();count++){
@@ -421,6 +421,8 @@ void kbd(unsigned char key, int x, int y)
                 game.ActiveObjects.at(count).objectType = 2;
             }
         }
+        printf("Sphere selected\n");
+        
     }
     if (key == '3'){
         for (int count = 0; count < game.ActiveObjects.size();count++){
@@ -428,12 +430,15 @@ void kbd(unsigned char key, int x, int y)
                 game.ActiveObjects.at(count).objectType = 3;
             }
         }
+        printf("Ring selected\n");
     }
     if (key == '8'){
         cameraParticlePosition = true;
+        printf("Pinball Perspective\n");
     }
     if (key == '9'){
         cameraParticlePosition = false;
+        printf("Regular Perspective\n");
     }
     if (key == 'x'){
         for (int count = 0; count < game.ActiveObjects.size();count++){
@@ -494,7 +499,8 @@ void kbd(unsigned char key, int x, int y)
         //check to see if on, is so turn off and vice versa
         game.ball = Particle();
         game.points = Points();
-        
+        gameOver = false;
+        printf("Restart\n");
     }
     
     if (key == 'l')
@@ -503,11 +509,13 @@ void kbd(unsigned char key, int x, int y)
         {
             lightswitch = false;
             glEnable(GL_LIGHTING);
+            printf("Light Enabled\n");
         }
         else
         {
             lightswitch = true;
             glDisable(GL_LIGHTING);
+            printf("Light Disabled\n");
         }
     }
 
@@ -560,6 +568,9 @@ void update(int value){
         x = -1;
     }
     }
+        if(game.ball.posY < -4){
+            gameOver = true;
+        }
     }
 	glutTimerFunc(10,update,0);
 }
@@ -594,6 +605,8 @@ static void init(void)
         ObjectsModel newObject;
         game.ActiveObjects.push_back(newObject);
     }
+    
+    printf("Welcome to 3GC3 Pinball \n \n How to play:\n Press 'a' and 's' to move the left and right paddle to hit the ball. The object of the game is to score as many points as possible by hitting objects before the ball falls.\n You can change the view by rotating the camera around the y axis to see the objects in it's z space. As well, press 8 to change over to pinball perspective and 9 to change back to regular perspective.\n\nThere are many more commands down below to enhance the 3D pinball expierence! \n \n Functions: \n \n a - move left flipper \n s - move right flipper \n arrow keys - move camera around y axis and x \n 8 - change camera to Pinball's perspective \n 9 - change camera to regular perspective \n mouse click - click on a object to select it \n 1 - change object to cube (object must be selected) \n 2 - change object to sphere (object must be selected) \n 3 - change object to ring (object must be selected) \n x and shift x - translate object along x axis (must be selected) \n y and shift y - translate object along y axis (must be selected) \n z and shift z - translate object along z axis (must be selected) \n space - start/stop animation \n r - restart game \n l - turn off/on lighting \n q or esc - quit program\n\n");
     
 }
 
