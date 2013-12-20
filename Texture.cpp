@@ -16,6 +16,7 @@ Texture::Texture(){
     
 };
 
+//load texture from file 
 GLubyte* Texture::LoadPPM(const char* file, int* width, int* height, int* max){
     GLubyte* img;
 	FILE *fd;
@@ -36,11 +37,9 @@ GLubyte* Texture::LoadPPM(const char* file, int* width, int* height, int* max){
 	//check if the first two characters are not P3, if not, it's not an ASCII PPM file
 	if(b[0]!='P'|| b[1] != '3')
 	{
-		printf("%s is not a PPM file!\n",file);
 		exit(0);
 	}
     
-	printf("%s is a PPM file\n", file);
     
 	//read past the file comments: scan for lines that begin
 	//  with #, and keep going until you find no more
@@ -57,8 +56,6 @@ GLubyte* Texture::LoadPPM(const char* file, int* width, int* height, int* max){
     
 	//read the rows, columns and max colour values
 	fscanf(fd, "%d %d %d", &n, &m, &k);
-    
-	printf("%d rows  %d columns  max value= %d\n",n,m,k);
     
 	//number of pixels is rows * columns
 	size = n*m;
@@ -86,7 +83,7 @@ GLubyte* Texture::LoadPPM(const char* file, int* width, int* height, int* max){
 }
 
 
-
+//set texture 
 void Texture::loadTexture()
 {
     glEnable(GL_TEXTURE_2D);
@@ -104,6 +101,7 @@ void Texture::loadTexture()
     
 }
 
+//draw texture
 void Texture::drawPlane(){
     
     glEnable(GL_TEXTURE_2D);
