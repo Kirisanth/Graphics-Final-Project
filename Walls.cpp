@@ -12,3 +12,9 @@ Walls::Walls()
 {
     
 };
+
+
+void Walls::RenderWalls()
+{
+    
+};

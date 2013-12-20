@@ -64,23 +64,41 @@ void Flipper::CalculateNormal()
 }
 
 
-void setFlipperColor()
+void Flipper::setFlipperColor()
 {
     
 }
 
 
-void drawFlipper()
+void Flipper::RenderFlippers()
 {
+    double vertex[2][4][3] = {{{0.4,movFlip1,2.5},{2.5,-0.7,2.5},{2.5,-0.7,0},{0.4,movFlip1,0}},{{-0.4,movFlip2,2.5},{-2.5,-0.7,2.5},{-2.5,-0.7,0},{-0.4,movFlip2,0}}};
+
     glColor3f(0.3, 0, 1);
-    glVertex3f(0.4,movFlip1,2.5);
-    glVertex3f(2.5,-0.7,2.5);
-    glVertex3f(2.5,-0.7,0);
-    glVertex3f(0.4,movFlip1,0);
+    glVertex3f(vertex[0][0][0], vertex[0][0][1], vertex[0][0][2]);
+    glVertex3f(vertex[0][1][0], vertex[0][1][1], vertex[0][1][2]);
+    glVertex3f(vertex[0][2][0], vertex[0][2][1], vertex[0][2][2]);
+    glVertex3f(vertex[0][3][0], vertex[0][3][1], vertex[0][3][2]);
     
     glColor3f(0.3, 0, 1);
-    glVertex3f(-0.4,movFlip2,2.5);
-    glVertex3f(-2.5,-0.7,2.5);
-    glVertex3f(-2.5,-0.7,0);
-    glVertex3f(-0.4,movFlip2,0);
+    glVertex3f(vertex[1][0][0], vertex[1][0][1], vertex[1][0][2]);
+    glVertex3f(vertex[1][1][0], vertex[1][1][1], vertex[1][1][2]);
+    glVertex3f(vertex[1][2][0], vertex[1][2][1], vertex[1][2][2]);
+    glVertex3f(vertex[1][3][0], vertex[1][3][1], vertex[1][3][2]);
+    
+    
+    
+    
+    
+//    glColor3f(0.3, 0, 1);
+//    glVertex3f(0.4,movFlip1,2.5);
+//    glVertex3f(2.5,-0.7,2.5);
+//    glVertex3f(2.5,-0.7,0);
+//    glVertex3f(0.4,movFlip1,0);
+//    
+//    glColor3f(0.3, 0, 1);
+//    glVertex3f(-0.4,movFlip2,2.5);
+//    glVertex3f(-2.5,-0.7,2.5);
+//    glVertex3f(-2.5,-0.7,0);
+//    glVertex3f(-0.4,movFlip2,0);
 }
