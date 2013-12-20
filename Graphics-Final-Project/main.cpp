@@ -430,7 +430,6 @@ void processSpecialKeys(int key, int x, int y) {
             angY = angY + 0.05;
             camera[0]=9*cos(angY);
             camera[2]=9*sin(angY);
-            
             break;
         case GLUT_KEY_RIGHT:
             angY = angY - 0.05;
@@ -483,7 +482,7 @@ int main(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(600, 600);
-	glutCreateWindow("Particle Fountain");
+	glutCreateWindow("3GC3 Pinball");
     
 	glutKeyboardUpFunc(kbd);
     glutSpecialFunc(processSpecialKeys);
@@ -499,8 +498,6 @@ int main(int argc, char** argv)
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
     init();
-    
-	//glRotatef(10, 1, 0, 0);
     glutDisplayFunc(display);
 	glutMainLoop();
 //    Particle ball;

@@ -91,17 +91,17 @@ void Texture::loadTexture()
 {
     glEnable(GL_TEXTURE_2D);
     //glGenTextures(1, &raster);
-    glGenTextures(4, textures);
+    glGenTextures(1, &textures);
     
-    image[0] = LoadPPM("feep.ppm", &width[0], &height[0], &maxNum[0]);
+    image = LoadPPM("feep.ppm", &width, &height, &maxNum);
     
-	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glBindTexture(GL_TEXTURE_2D, textures);
 	
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width[0], height[0], 0, GL_RGB, GL_UNSIGNED_BYTE, image[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     
 }
 
@@ -110,7 +110,7 @@ void Texture::drawPlane(){
     glEnable(GL_TEXTURE_2D);
     
     glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D, textures[0]);
+    glBindTexture(GL_TEXTURE_2D, textures);
     
     glColor3f(0.2,0.4,0.7);
     glBegin(GL_QUADS);

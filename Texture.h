@@ -15,11 +15,11 @@
 class Texture{
     public:
         Texture();
-        GLuint textures[4];
-        GLubyte* image[4];
-        int width[4]; int
-        height[4];
-        int maxNum[4];
+        GLuint textures;
+        GLubyte* image;
+        int width; int
+        height;
+        int maxNum;
         GLubyte* LoadPPM(const char* file, int* width, int* height, int* max);
         void loadTexture();
         void drawPlane();
