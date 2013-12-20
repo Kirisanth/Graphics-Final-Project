@@ -19,6 +19,7 @@ class Points{
     int points;
     void setPoints(int x);
     void dispalyPoints();
+    void gameOver();
 };
 
 #endif /* defined(__Graphics_Final_Project__Points__) */

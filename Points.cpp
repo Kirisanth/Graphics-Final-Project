@@ -42,6 +42,14 @@ void Points::dispalyPoints(){
     glPopMatrix();
 }
 
+void Points::gameOver(){
+    char *c= "GAME OVER - PLEASE PRESS R TO TRY AGAIN";
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos3f( -3.0f , 2.0f ,4.0f );
+    for(int i = 0; c[i] != '\0'; i++)
+        glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , c[i]);
+}
+
 
 
 
