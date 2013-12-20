@@ -176,6 +176,12 @@ Vec3D Math3dhelpers::createVector(double p1X,double p1Y,double p1Z,double p2X,do
     newVector.yComponent = p1Y - p2Y;
     newVector.zComponent = p1Z - p2Z;
     
+//    std::cout << p1Y << ",";
+//    std::cout << p2Y << ",";
+//    std::cout << newVector.yComponent << ",|\n";;
+//    std::cout << p2Y << ",|\n";
+    
+    
     return newVector;
 }
 
@@ -189,10 +195,22 @@ Vec3D Math3dhelpers::crossProduct(Vec3D u, Vec3D v)
     //u is vector
     //v is vector2
     //u x v
+//    std::cout << u.xComponent << ",";
+//    std::cout << u.yComponent << ",";
+//    std::cout << u.zComponent << ",|";
+//    std::cout << v.xComponent << ",";
+//    std::cout << v.yComponent << ",";
+//    std::cout << v.zComponent << ",\n";
+//    std::cout << v.yComponent << ",|\n";
     
     newVector.xComponent = u.yComponent*v.zComponent - u.zComponent*v.yComponent;
     newVector.yComponent = u.zComponent*v.xComponent - u.xComponent*v.zComponent;
     newVector.zComponent = u.xComponent*v.yComponent - u.yComponent*v.xComponent;
+
+    std::cout << newVector.xComponent << ",";
+    std::cout << newVector.yComponent << ",";
+    std::cout << newVector.zComponent << ",|\n";
+    
     
 //    newVector.xComponent = u2*v3 - u3*v2;
 //    newVector.yComponent = u3*v1 - u1*v3;
