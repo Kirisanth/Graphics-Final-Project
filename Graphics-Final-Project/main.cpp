@@ -173,6 +173,11 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     glVertex3f(-2.5,-0.7,2.5);
     glVertex3f(-2.5,-0.7,0);
     glVertex3f(-0.4,movFlip2,0);
+//    std::cout << movFlip1;
+//    game.flipperStruct.movFlip1 = movFlip1;
+//    game.flipperStruct.movFlip2 = movFlip2;
+//    game.flipperStruct.RenderFlippers();
+    
     
     //back
     glColor3f(0.3, 0.3, 0.3);
@@ -295,18 +300,37 @@ void display(void)
         }
         else{//decrease by 0.1 to move flipper down
                 moveY = moveY - 0.1;
-                game.flipperStruct.movFlip1 = moveY;
+//                game.flipperStruct.movFlip1 = moveY;
+//                game.flipperStruct.movFlip2 = moveY;
         }
             if(flip1 == true && flip2 == true)//check if both buttons have been pressed a and s
+            {
+                game.flipperStruct.movFlip1 = moveY;
+                game.flipperStruct.movFlip2 = moveY;
+                game.flipperStruct.CalculateNormal();
                 pinballStruct(moveY,moveY,drawWall1First);//make both flippers move
+            }
             else if (flip1 == true)//check if s is pressed
+            {
+                game.flipperStruct.movFlip1 = moveY;
+                game.flipperStruct.CalculateNormal();
+
+//            std::cout << game.flipperStruct.flipperNormal[0][0] << ",";
+//            std::cout << game.flipperStruct.flipperNormal[0][1] << ",";
+//            std::cout << game.flipperStruct.flipperNormal[0][2] << ",|,\n";
                 pinballStruct(moveY,-2,drawWall1First);//make s flipper move
+            }
             else//else a is pressed
+            {
+//                game.flipperStruct.movFlip2 = moveY;
+                game.flipperStruct.setUpdatedYValue1(moveY);
+                game.flipperStruct.CalculateNormal();
                 pinballStruct(-2,moveY,drawWall1First);//make a flipper move
+            }
             //glutSwapBuffers();
         //}
         if(x >= 25){//if x = 25, flipper is at orginal position
-            flip1 =false;
+            flip1 = false;
             flip2 = false;
             x = -1;
         }

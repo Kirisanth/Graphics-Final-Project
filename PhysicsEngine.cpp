@@ -142,9 +142,6 @@ void PhysicsEngine::collisionTest()
                 
                 double normal[] = {pinballStruct.platformNormal[count][0],pinballStruct.platformNormal[count][1],pinballStruct.platformNormal[count][2]};
                 
-                
-                
-                
                 Vec3D bounceVector = CalculateBounceVector(normal[0], normal[1], normal[2], ball.velX, ball.velY, ball.velZ);
                 ball.velX = bounceVector.xComponent;
                 ball.velY = bounceVector.yComponent;
@@ -164,6 +161,12 @@ void PhysicsEngine::collisionTest()
         flipperStruct.CalculateNormal();
         //undergoe ray plane test
         groundPlane = collision.rayPlaneTest(count, flipperStruct);
+//        std::cout << flipperStruct.flipperNormal[0][0] << ",";
+//        std::cout << flipperStruct.flipperNormal[0][1] << ",";
+//        std::cout << flipperStruct.flipperNormal[0][2] << ",|,";
+//        std::cout << flipperStruct.flipperNormal[0][0] << ",";
+//        std::cout << flipperStruct.flipperNormal[0][1] << ",";
+//        std::cout << flipperStruct.flipperNormal[0][2] << "\n";
         //update the position of the object to the intersection point
         if ( groundPlane == true){
             collision.objectPos[0] = collision.inter[0];

@@ -39,6 +39,8 @@ public:
     void CalculateNormal();
     void RenderFlippers();
     void setFlipperColor();
+    void setUpdatedYValue1(double value1);
+    void setUpdatedYValue2(double value1);
 };
 
 #endif /* defined(__Graphics_Final_Project__Flipper__) */
