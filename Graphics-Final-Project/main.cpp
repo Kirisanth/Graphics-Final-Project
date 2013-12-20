@@ -232,6 +232,10 @@ void display(void)
     if (cameraParticlePosition == true){
         glRotatef(45, 1, 0, 0);
         glTranslatef(-game.ball.posX, 12.5 - game.ball.posY, -game.ball.posZ);
+        angY = 9*sin(1.05);
+        camera[0] = 0;
+        camera[1] = 9;
+        camera[2] = 9;
     }
     //drawAxis();
     bool drawWall1First;
@@ -264,18 +268,10 @@ void display(void)
     
     if (flip1 == true || flip2 == true){//Check to see if user pressed flipper button a or s
             //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            x++;//x is used to iterate over moving the flipper up then back down
+            //x++;//x is used to iterate over moving the flipper up then back down
         
         //pinballStruct(moveY, moveY, drawWall1First);
-        if (x < 13){//increment by 0.1 to move flipper up. When x reaches 12, it'll reach its maximum which is -0.4
-                moveY = moveY + 0.1;
-                game.flipperStruct.movFlip1 = moveY;
-        }
-        else{//decrease by 0.1 to move flipper down
-                moveY = moveY - 0.1;
-//                game.flipperStruct.movFlip1 = moveY;
-//                game.flipperStruct.movFlip2 = moveY;
-        }
+
             if(flip1 == true && flip2 == true)//check if both buttons have been pressed a and s
             {
                 game.flipperStruct.movFlip1 = moveY;
@@ -302,11 +298,7 @@ void display(void)
             }
             //glutSwapBuffers();
         //}
-        if(x >= 25){//if x = 25, flipper is at orginal position
-            flip1 = false;
-            flip2 = false;
-            x = -1;
-        }
+
     }
     else{
         pinballStruct(-2,-2,drawWall1First);
@@ -441,9 +433,32 @@ void processSpecialKeys(int key, int x, int y) {
 }
 
 
+void update(int value){
+	game.moveParticle();
+    
+    if (flip1 == true || flip2 == true){
+        x++;//x is used to iterate over moving the flipper up then back down
+        printf("%d",x);
+        if (x < 13){//increment by 0.1 to move flipper up. When x reaches 12, it'll reach its maximum which is -0.4
+            moveY = moveY + 0.1;
+            game.flipperStruct.movFlip1 = moveY;
+        }
+        else{//decrease by 0.1 to move flipper down
+            moveY = moveY - 0.1;
+            //                game.flipperStruct.movFlip1 = moveY;
+            //                game.flipperStruct.movFlip2 = moveY;
+        }
+    if(x >= 25){//if x = 25, flipper is at orginal position
+        flip1 = false;
+        flip2 = false;
+        x = -1;
+    }
+    }
+	glutTimerFunc(10,update,0);
+}
+
 void idle()
 {
-    game.moveParticle();
     glutPostRedisplay();
 }
 
@@ -499,6 +514,7 @@ int main(int argc, char** argv)
     glCullFace(GL_BACK);
     init();
     glutDisplayFunc(display);
+    glutTimerFunc(10,update,0);
 	glutMainLoop();
 //    Particle ball;
 //    PhysicsEngine test;
