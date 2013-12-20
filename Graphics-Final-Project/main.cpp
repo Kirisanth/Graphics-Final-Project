@@ -287,6 +287,8 @@ void display(void)
     if (flip1 == true || flip2 == true){//Check to see if user pressed flipper button a or s
             //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             x++;//x is used to iterate over moving the flipper up then back down
+        
+        pinballStruct(moveY, moveY, drawWall1First);
             if (x < 13)//increment by 0.1 to move flipper up. When x reaches 12, it'll reach its maximum which is -0.4
                 moveY = moveY + 0.1;
             else//decrease by 0.1 to move flipper down
