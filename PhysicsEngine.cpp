@@ -157,12 +157,11 @@ void PhysicsEngine::collisionTest()
 
     }
     
-    
-    //flipper 
+    //flipper
     for (int count = 0; count < 2; count++){
         //normalize direction vector
         collision.normalizeDirection();
-        
+        flipperStruct.CalculateNormal();
         //undergoe ray plane test
         groundPlane = collision.rayPlaneTest(count, flipperStruct);
         //update the position of the object to the intersection point
@@ -177,15 +176,18 @@ void PhysicsEngine::collisionTest()
             //printf("t2 = %f", t2);
             float t3 = collision.inter[2] - ball.posZ;
             Vec3D v = Vec3D(t1, t2, t3);
+            
             double distanceFromCenter = Math.distance3D(v);
+            std::cout << distanceFromCenter;
             if (distanceFromCenter < 0.25){
+                std::cout << distanceFromCenter;
                 //            if (t1 < 0.25 && t2 < 0.25 && 0 < t1 && t3 < 0.25){
                 //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
                 //printf("WORKS");
                 
                 //if(collision.inter[1] > -0.7 && collision.inter[1] <= 4.8){
                     
-                    double normal[] = {pinballStruct.platformNormal[count][0],pinballStruct.platformNormal[count][1],pinballStruct.platformNormal[count][2]};
+                    double normal[] = {flipperStruct.flipperNormal[count][0],flipperStruct.flipperNormal[count][1],flipperStruct.flipperNormal[count][2]};
                     
                     
                     

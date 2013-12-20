@@ -10,6 +10,7 @@
 #define __Graphics_Final_Project__Walls__
 
 #include <iostream>
+#include <GLUT/glut.h>
 
 class Walls
 {
@@ -27,6 +28,7 @@ public:
     
     //constructor
     Walls();
+    void RenderWalls();
 };
 
 #endif /* defined(__Graphics_Final_Project__Walls__) */

@@ -64,13 +64,13 @@ void Flipper::CalculateNormal()
 }
 
 
-void setFlipperColor()
+void Flipper::setFlipperColor()
 {
     
 }
 
 
-void drawFlipper()
+void Flipper::RenderFlippers()
 {
 //    glColor3f(0.3, 0, 1);
 //    glVertex3f(0.4,movFlip1,2.5);
