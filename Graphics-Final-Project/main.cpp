@@ -14,21 +14,10 @@
 #include "Texture.h"
 #include <math.h>
 #include "ray.h"
-//#include "Points.h"
-
-
-
+#include "Texture.h"
+#include "Points.h"
 
 ray newRay;
-GLdouble newPoint [3];//creates new point
-GLdouble pNear[3];//depth for z
-GLdouble pFar[3]; //depth for z
-float objectPos[3];//stores object position
-float inter[3];//stores object intersection
-bool groundPlane = true;//check if hit on plane
-double platformNormal[2][3] ={{-1,0,0},{1,0,0}};
-double platformPoints[2][3] = {{-2.5,-0.7,2.5}, {2.5,4.7,0}};
-float minX = -2.500000, maxX = 2.500000, minY = -0.7, maxY = 4.7, minZ = 0, maxZ = 2.5;
 bool hit1, hit2;
 double transparentWall1 = 1;
 double transparentWall2 = 1;
@@ -40,7 +29,8 @@ double camera[3] = {0,9,9};//declares camera at position
 double bounceY = 0;
 int x = -1;
 PhysicsEngine game;
-//Points points;
+Texture textureObeject;
+bool cameraParticlePosition = false;
 
 void Get3DPos(int x, int y, float winz, GLdouble point[3])
 {
@@ -58,7 +48,6 @@ void Get3DPos(int x, int y, float winz, GLdouble point[3])
     
 }
 
-
 //
 ///* rayCast - takes a mouse x,y, coordinate, and casts a ray through that point
 // *   for subsequent intersection tests with objects.
@@ -66,6 +55,10 @@ void Get3DPos(int x, int y, float winz, GLdouble point[3])
 void rayCast(float x, float y)
 
 {
+    bool groundPlane = true;//check if hit on plane
+    GLdouble pNear[3];//depth for z
+    GLdouble pFar[3]; //depth for z
+    float inter[3];//stores object intersection
     //count through number of objects to perform tests on each one
         //count through number of planes of each object to perform test on each one
         for (int count1 = 0; count1 < game.ActiveObjects.size(); count1++){
@@ -92,7 +85,7 @@ void rayCast(float x, float y)
             //update the position of the object to the intersection point
             	//update the position of the object to the intersection point
                 if ( groundPlane == true){
-                    printf("x = %f, y = %f, z = %f",newRay.inter[0], newRay.inter[1], newRay.inter[2]);
+                    //printf("x = %f, y = %f, z = %f",newRay.inter[0], newRay.inter[1], newRay.inter[2]);
                     //check if object is hit between min and max bounds
                     if ((game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateX < newRay.inter[0] && newRay.inter[0] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateX && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateZ < newRay.inter[2] && newRay.inter[2] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateZ && inter[1] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateY && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateY < newRay.inter[1])){
                         
@@ -221,20 +214,6 @@ void drawAxis()
 	glEnd();
 }
 
-void Points(){
-    //char dig = (char)(((int)'0')+10);
-    char *a= "Points: ";
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glRasterPos3f( 2.0f , -1.0f ,4.0f );
-    for(int i = 0; a[i] != '\0'; i++)
-        glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , a[i]);
-    
-    std::string s = std::to_string(4000);
-    char const *pchar = s.c_str();
-    for (int count = 0; pchar[count] != '\0'; count++){
-        glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18 , pchar[count]);
-    }
-}
 
 void display(void)
 {
@@ -242,24 +221,18 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(camera[0], camera[1], camera[2], 0, 0, 0, orientation[0], orientation[1], orientation[2]);
-    
-    
-    //intersection point for ray casting
-    /*
-    glPointSize(10);
-    glBegin(GL_POINTS);
-    glVertex3f(objectPos[0],objectPos[1],objectPos[2]);//draw point
-    glEnd();
-    */
+        
+    textureObeject.drawPlane();
     
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    //Points();
     glPushMatrix();
     
-    //for first person camera 
-    //glRotatef(45, 1, 0, 0);
-    //glTranslatef(-game.ball.posX, 12.5 - game.ball.posY, -game.ball.posZ);
+    //for first person camera
     
+    if (cameraParticlePosition == true){
+        glRotatef(45, 1, 0, 0);
+        glTranslatef(-game.ball.posX, 12.5 - game.ball.posY, -game.ball.posZ);
+    }
     //drawAxis();
     bool drawWall1First;
     if ((-9<camera[0] && camera[0] < -6) || hit2 == true){
@@ -390,6 +363,12 @@ void kbd(unsigned char key, int x, int y)
             }
         }
     }
+    if (key == '8'){
+        cameraParticlePosition = true;
+    }
+    if (key == '9'){
+        cameraParticlePosition = false;
+    }
     if (key == 'x'){
         for (int count = 0; count < game.ActiveObjects.size();count++){
             if (game.ActiveObjects.at(count).hit == true){
@@ -476,11 +455,6 @@ void mouse(int btn, int state, int x, int y)
 	{
         rayCast(x, y);
 	}
-    //delete if pressed
-	if(btn == GLUT_RIGHT_BUTTON)
-	{
-	}
-    
 	glFlush();
     glutSwapBuffers();
 }
@@ -493,6 +467,7 @@ static void init(void)
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glShadeModel (GL_FLAT);
     
+    textureObeject.loadTexture();
     
     for (int x = 0; x < 5; x++){
         ObjectsModel newObject;

@@ -12,89 +12,72 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <GL/glut.h>
-
-int width = 0;
-int height = 0;
-
-
-GLubyte *image;
-
-
-void display()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
+Texture::Texture(){
     
-	/* set raster position, and flip coordinates to account for data "orientation" in image data array*/
-	glRasterPos2i(width,0);
-	glPixelZoom(-1, 1);
-    
-	/* draw the pixels from the image data array */
-	glDrawPixels(width,height,GL_RGB, GL_UNSIGNED_BYTE, image);
-	glFlush();
-}
+};
 
-
-void myreshape(int h, int w)
-{
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0.0, (GLfloat) width, 0.0, (GLfloat) height);
-	glMatrixMode(GL_MODELVIEW);
-}
-
-GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
-{
-	GLubyte* img;
+GLubyte* Texture::LoadPPM(const char* file, int* width, int* height, int* max){
+    GLubyte* img;
 	FILE *fd;
 	int n, m;
-	int  k, nm;
+	int  k, size;
 	char c;
 	int i;
 	char b[100];
 	float s;
 	int red, green, blue;
-	
-	/* first open file and check if it's an ASCII PPM (indicated by P3 at the start) */
+    
+	//open the file in read mode
 	fd = fopen(file, "r");
+    
+	//scan everything up to newline
 	fscanf(fd,"%[^\n] ",b);
+    
+	//check if the first two characters are not P3, if not, it's not an ASCII PPM file
 	if(b[0]!='P'|| b[1] != '3')
 	{
 		printf("%s is not a PPM file!\n",file);
 		exit(0);
 	}
-	printf("%s is a PPM file\n", file);
-	fscanf(fd, "%c",&c);
     
-	/* next, skip past the comments - any line starting with #*/
+	printf("%s is a PPM file\n", file);
+    
+	//read past the file comments: scan for lines that begin
+	//  with #, and keep going until you find no more
+	fscanf(fd, "%c",&c);
 	while(c == '#')
 	{
 		fscanf(fd, "%[^\n] ", b);
 		printf("%s\n",b);
 		fscanf(fd, "%c",&c);
 	}
+    
+	//rewind the read pointer one character, or we'll lose the size
 	ungetc(c,fd);
     
-	/* now get the dimensions and max colour value from the image */
+	//read the rows, columns and max colour values
 	fscanf(fd, "%d %d %d", &n, &m, &k);
     
 	printf("%d rows  %d columns  max value= %d\n",n,m,k);
     
-	/* calculate number of pixels and allocate storage for this */
-	nm = n*m;
-	img = malloc(3*sizeof(GLuint)*nm);
+	//number of pixels is rows * columns
+	size = n*m;
+    
+	//allocate memory to store 3 GLuints for every pixel
+	img =  (GLubyte *)malloc(3*sizeof(GLuint)*size);
+    
+	//scale the colour in case maxCol is not 255
 	s=255.0/k;
     
-	/* for every pixel, grab the read green and blue values, storing them in the image data array */
-	for(i=0;i<nm;i++)
+	//start reading pixel colour data
+	for(i=0;i<size;i++)
 	{
 		fscanf(fd,"%d %d %d",&red, &green, &blue );
-		img[3*nm-3*i-3]=red*s;
-		img[3*nm-3*i-2]=green*s;
-		img[3*nm-3*i-1]=blue*s;
+		img[3*size-3*i-3]=red*s;
+		img[3*size-3*i-2]=green*s;
+		img[3*size-3*i-1]=blue*s;
 	}
     
-	/* finally, set the "return parameters" (width, height, max) and return the image array */
 	*width = n;
 	*height = m;
 	*max = k;
@@ -102,23 +85,51 @@ GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
 	return img;
 }
 
-void main(int argc, char *argv[])
+
+
+void Texture::loadTexture()
 {
-	int k;
+    glEnable(GL_TEXTURE_2D);
+    //glGenTextures(1, &raster);
+    glGenTextures(4, textures);
     
-	/* use PPM load function to load the snail - other PPMs also provided so you can test them.
-	 * You can also create your own using the process outlined in the slides
-	 */
-	image = LoadPPM("snail_a.ppm", &width, &height, &k);
+    image[0] = LoadPPM("feep.ppm", &width[0], &height[0], &maxNum[0]);
     
-	/* nothing special down here */
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB );
-    glutInitWindowSize(width, height);
-    glutCreateWindow("image");
-    glClearColor (1.0, 1.0, 1.0, 1.0);
-	glutReshapeFunc(myreshape);
-    glutDisplayFunc(display);
-    glutMainLoop();
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width[0], height[0], 0, GL_RGB, GL_UNSIGNED_BYTE, image[0]);
+    
+}
+
+void Texture::drawPlane(){
+    
+    glEnable(GL_TEXTURE_2D);
+    
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
+    
+    glColor3f(0.2,0.4,0.7);
+    glBegin(GL_QUADS);
+    glNormal3d(0,1,0);
+    glTexCoord2f(1,0);
+    glVertex3f(-20, -2, 20);
+    glTexCoord2f(0,0);
+    glVertex3f(20, -2, 20);
+    glTexCoord2f(0,1);
+    glVertex3f(20, -2, -20);
+    glTexCoord2f(1,1);
+    glVertex3f(-20, -2, -20);
+    glEnd();
+    
+    glColor4f(1, 1, 1, 1);
+    
+    glDisable(GL_COLOR_MATERIAL);
+    glPopMatrix();
+    
+    glDisable(GL_TEXTURE_2D);
     
 }
