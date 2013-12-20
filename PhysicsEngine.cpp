@@ -178,15 +178,15 @@ void PhysicsEngine::collisionTest()
             Vec3D v = Vec3D(t1, t2, t3);
             
             double distanceFromCenter = Math.distance3D(v);
-            std::cout << distanceFromCenter;
             if (distanceFromCenter < 0.25){
-                std::cout << distanceFromCenter;
                 //            if (t1 < 0.25 && t2 < 0.25 && 0 < t1 && t3 < 0.25){
                 //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
                 //printf("WORKS");
                 
-                //if(collision.inter[1] > -0.7 && collision.inter[1] <= 4.8){
+                if (count == 0){
                     
+                if(collision.inter[0] > 0.4 && collision.inter[0] <= 2.5 && collision.inter[2] > 0 && collision.inter[2] <= 2.5){
+                
                     double normal[] = {flipperStruct.flipperNormal[count][0],flipperStruct.flipperNormal[count][1],flipperStruct.flipperNormal[count][2]};
                     
                     
@@ -198,7 +198,24 @@ void PhysicsEngine::collisionTest()
                     ball.velZ = bounceVector.zComponent;
                     //call calculate bounce vector
                     break;
-                //}
+                }
+                }
+                else if(count == 1){
+                    if(collision.inter[0] > -2.5 && collision.inter[0] <= -0.4 && collision.inter[2] > 0 && collision.inter[2] <= 2.5){
+                        
+                        double normal[] = {flipperStruct.flipperNormal[count][0],flipperStruct.flipperNormal[count][1],flipperStruct.flipperNormal[count][2]};
+                        
+                        
+                        
+                        
+                        Vec3D bounceVector = CalculateBounceVector(normal[0], normal[1], normal[2], ball.velX, ball.velY, ball.velZ);
+                        ball.velX = bounceVector.xComponent;
+                        ball.velY = bounceVector.yComponent;
+                        ball.velZ = bounceVector.zComponent;
+                        //call calculate bounce vector
+                        break;
+                    }
+                }
             }
         }
         

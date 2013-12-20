@@ -14,10 +14,10 @@ Particle::Particle()
     point2D particlePoint;
     color particleColor;
     particleSize = 0;
-    velY = 10;
+    velY = 110;
     velX = 0;
     velZ = 0;
-    posX = 0;
+    posX = -1;
     posZ = 0.5;
     posY = 4.2;
     rotationX = 0;
