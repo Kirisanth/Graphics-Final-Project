@@ -32,6 +32,7 @@ PhysicsEngine game;
 Texture textureObeject;
 bool cameraParticlePosition = false;
 bool startStop = true;
+bool lightswitch = true;
 
 void Get3DPos(int x, int y, float winz, GLdouble point[3])
 {
@@ -147,7 +148,6 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     glEnable(GL_BLEND); //Enable blending.
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set blending function.
     
-
     //platform
     glColor3f(0.3, 0, 1);
     glVertex3f(-2.5,4.7,2.5);
@@ -167,10 +167,6 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     glVertex3f(-2.5,-0.7,2.5);
     glVertex3f(-2.5,-0.7,0);
     glVertex3f(-0.4,movFlip2,0);
-//    std::cout << movFlip1;
-//    game.flipperStruct.movFlip1 = movFlip1;
-//    game.flipperStruct.movFlip2 = movFlip2;
-//    game.flipperStruct.RenderFlippers();
     
     
     //back
@@ -180,18 +176,13 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     glVertex3f(-2.5,4.7,0);
     glVertex3f(-2.5,-0.7,0);
     
-    
     if(drawWall1First == true){//Created to make sure wall 1 is seen if wall 2 is transparent
-        glEnable(GL_COLOR_MATERIAL);
         drawWall1();
         drawWall2();
-        glDisable(GL_COLOR_MATERIAL);
     }
     else{
-        glEnable(GL_COLOR_MATERIAL);
         drawWall2();
         drawWall1();
-        glDisable(GL_COLOR_MATERIAL);
     }
 
 	glEnd();
@@ -259,24 +250,24 @@ void light()
     //    glTranslatef(2, 1, 0);
     
     GLfloat position[] = { static_cast<GLfloat>(game.ball.posX), static_cast<GLfloat>(game.ball.posX), static_cast<GLfloat>(game.ball.posX), 1.0 };
-    float amb[4] = {1.0, 1, 1, 1};
-	float diff[4] = {1,0,0, 1};
+//    float amb[4] = {1.0, 1, 1, 1};
+//	float diff[4] = {1,0,0, 1};
 	float spec[4] = {0,0,1, 1};
     
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
+//	glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
+//	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, spec);
     glLightfv (GL_LIGHT0, GL_POSITION, position);
     
     
     GLfloat position2[] = {0 , 4.5, 0, 1.0};
-//    float amb2[4] = {0, 1, 1, 1};
+    float amb2[4] = {0, 1, 1, 1};
 	float diff2[4] = {0,0,0, 1};
-//	float spec2[4] = {0,0,0, 0};
+	float spec2[4] = {0,0,0, 0};
     
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff2);
-    //	glLightfv(GL_LIGHT1, GL_AMBIENT, amb2);
-    //	glLightfv(GL_LIGHT1, GL_SPECULAR, spec2);
+	glLightfv(GL_LIGHT1, GL_AMBIENT, amb2);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, spec2);
     glLightfv (GL_LIGHT1, GL_POSITION, position2);
     
     float m_amb[] = {0.33, 0.22, 0.03, 1.0};
@@ -504,6 +495,20 @@ void kbd(unsigned char key, int x, int y)
         game.ball = Particle();
         game.points = Points();
         
+    }
+    
+    if (key == 'l')
+    {
+        if(lightswitch == true)
+        {
+            lightswitch = false;
+            glDisable(GL_LIGHTING);
+        }
+        else
+        {
+            lightswitch = true;
+            glEnable(GL_LIGHTING);
+        }
     }
 
 }
