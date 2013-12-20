@@ -35,11 +35,11 @@ void Lighting::initialize()
 {
 //    glEnable(GL_LIGHTING);
 //    glEnable(GL_LIGHT0);
-    glClearColor (0.0, 0.0, 0.0, 0.0);
-    glShadeModel (GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_DEPTH_TEST);
+//    glClearColor (0.0, 0.0, 0.0, 0.0);
+//    glShadeModel (GL_SMOOTH);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+//    glEnable(GL_DEPTH_TEST);
     
     //    std::cout << light_ambient;
     
@@ -54,7 +54,7 @@ void Lighting::initialize()
 
 void Lighting::lightBall()
 {
-    GLfloat lightpos[] = {.5, 1., 1., 0.};
+    GLfloat lightpos[] = {0, 0, 0, 0.};
     glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
     
 //    GLfloat light_position[] = { 0.0, 0.0, 1.5, 1.0 };
