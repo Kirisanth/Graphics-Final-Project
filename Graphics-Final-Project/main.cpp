@@ -31,6 +31,7 @@ int x = -1;
 PhysicsEngine game;
 Texture textureObeject;
 bool cameraParticlePosition = false;
+bool startStop = true;
 
 void Get3DPos(int x, int y, float winz, GLdouble point[3])
 {
@@ -405,6 +406,23 @@ void kbd(unsigned char key, int x, int y)
             }
         }
     }
+    if (key == ' '){
+        //check to see if on, is so turn off and vice versa
+        if (startStop == true){
+            startStop = false;
+            printf("stoped animation\n");
+        }
+        else if (startStop == false){
+            startStop = true;
+            printf("started animation\n");
+        }
+    }
+    if (key == 'r'){
+        //check to see if on, is so turn off and vice versa
+        game.ball = Particle();
+        game.points = Points();
+        
+    }
 
 }
 
@@ -434,6 +452,7 @@ void processSpecialKeys(int key, int x, int y) {
 
 
 void update(int value){
+    if (startStop == true){
 	game.moveParticle();
     
     if (flip1 == true || flip2 == true){
@@ -452,6 +471,7 @@ void update(int value){
         flip1 = false;
         flip2 = false;
         x = -1;
+    }
     }
     }
 	glutTimerFunc(10,update,0);
@@ -486,7 +506,6 @@ static void init(void)
     for (int x = 0; x < 5; x++){
         ObjectsModel newObject;
         game.ActiveObjects.push_back(newObject);
-    
     }
     
 }

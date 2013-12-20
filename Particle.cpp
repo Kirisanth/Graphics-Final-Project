@@ -15,8 +15,8 @@ Particle::Particle()
     color particleColor;
     particleSize = 0;
     velY = -500;
-    velX = 10;
-    velZ = 0;
+    velX = (rand() % (70 - 50) + 1);
+    velZ = (rand() % (70 - 50) + 1);
     posX = 1;
     posZ = 0.5;
     posY = 4.2;

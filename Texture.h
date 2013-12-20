@@ -17,9 +17,9 @@ class Texture{
         Texture();
         GLuint textures;
         GLubyte* image;
-        int width; int
-        height;
-        int maxNum;
+        int width;
+        int height;
+        int max;
         GLubyte* LoadPPM(const char* file, int* width, int* height, int* max);
         void loadTexture();
         void drawPlane();

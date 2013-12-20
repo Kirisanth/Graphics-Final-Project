@@ -42,3 +42,6 @@ void Points::dispalyPoints(){
     glPopMatrix();
 }
 
+
+
+
