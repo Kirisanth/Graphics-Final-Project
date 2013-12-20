@@ -16,14 +16,20 @@ class Lighting {
     
 public:
     //fields
-    GLfloat light_ambient[4];
-    GLfloat light_diffuse[4];
-    GLfloat light_specular[4];
-    GLfloat light_position[4];
+//    GLfloat light_ambient[4];
+//    GLfloat light_diffuse[4];
+//    GLfloat light_specular[4];
+//    GLfloat light_position[4];
+    
+    GLfloat light_ambient[4] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat light_diffuse[4] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_specular[4] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat light_position[4] = { 1.0, 1.0, 1.0, 0.0 };
     //constructor
     //instantiated on the stack
     Lighting();
     //methods
+    void initialize();
     void lightBall();
     void lightObject();
     void setLightLocation();
