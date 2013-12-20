@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <GLUT/glut.h>
 #include "MathLibrary.h"
+#include "Lighting.h"
 
 class Particle
 {
@@ -22,6 +23,7 @@ public:
     float particleSize;//store size property
     double posX, posY, posZ;//store positions of particle (center)
     double velX, velY, velZ;//store velocity of particles
+    Lighting light;
 
     //constructor
     Particle();
