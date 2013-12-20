@@ -502,12 +502,12 @@ void kbd(unsigned char key, int x, int y)
         if(lightswitch == true)
         {
             lightswitch = false;
-            glDisable(GL_LIGHTING);
+            glEnable(GL_LIGHTING);
         }
         else
         {
             lightswitch = true;
-            glEnable(GL_LIGHTING);
+            glDisable(GL_LIGHTING);
         }
     }
 
@@ -610,7 +610,6 @@ int main(int argc, char** argv)
 	glutIdleFunc(idle);
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
-    glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 	glLoadIdentity();
