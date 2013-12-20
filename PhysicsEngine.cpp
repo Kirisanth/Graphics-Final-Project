@@ -138,7 +138,7 @@ void PhysicsEngine::collisionTest()
                 //if (inter[0] < 2.5 && inter[0] > -2.5 && inter[2] < 2.5 && inter[2] > 0 && inter[1] == 4.700000){
                 //printf("WORKS");
                 
-                if(collision.inter[1] > -0.7 && collision.inter[1] <= 4.8){
+                if(collision.inter[1] > -0.7 && collision.inter[1] <= 4.8 && collision.inter[2] > 0 && collision.inter[2] <= 2.5){
                 
                 double normal[] = {pinballStruct.platformNormal[count][0],pinballStruct.platformNormal[count][1],pinballStruct.platformNormal[count][2]};
                 
@@ -185,7 +185,7 @@ void PhysicsEngine::collisionTest()
                 
                 if (count == 0){
                     
-                if(collision.inter[0] > 0.4 && collision.inter[0] <= 2.5 && collision.inter[2] > 0 && collision.inter[2] <= 2.5){
+                if(collision.inter[0] > 0.4 && collision.inter[0] < 2.5 && collision.inter[2] > 0 && collision.inter[2] < 2.5){
                 
                     double normal[] = {flipperStruct.flipperNormal[count][0],flipperStruct.flipperNormal[count][1],flipperStruct.flipperNormal[count][2]};
                     
@@ -201,7 +201,7 @@ void PhysicsEngine::collisionTest()
                 }
                 }
                 else if(count == 1){
-                    if(collision.inter[0] > -2.5 && collision.inter[0] <= -0.4 && collision.inter[2] > 0 && collision.inter[2] <= 2.5){
+                    if(collision.inter[0] > -2.5 && collision.inter[0] < -0.4 && collision.inter[2] > 0 && collision.inter[2] < 2.5){
                         
                         double normal[] = {flipperStruct.flipperNormal[count][0],flipperStruct.flipperNormal[count][1],flipperStruct.flipperNormal[count][2]};
                         
