@@ -158,7 +158,7 @@ void PhysicsEngine::collisionTest()
     for (int count = 0; count < 2; count++){
         //normalize direction vector
         collision.normalizeDirection();
-        flipperStruct.CalculateNormal();
+        //flipperStruct.CalculateNormal();
         //undergoe ray plane test
         groundPlane = collision.rayPlaneTest(count, flipperStruct);
 //        std::cout << flipperStruct.flipperNormal[0][0] << ",";
