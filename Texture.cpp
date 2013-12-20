@@ -90,10 +90,9 @@ GLubyte* Texture::LoadPPM(const char* file, int* width, int* height, int* max){
 void Texture::loadTexture()
 {
     glEnable(GL_TEXTURE_2D);
-    //glGenTextures(1, &raster);
     glGenTextures(1, &textures);
     
-    image = LoadPPM("feep.ppm", &width, &height, &maxNum);
+    image = LoadPPM("feep.ppm", &width, &height, &max);
     
 	glBindTexture(GL_TEXTURE_2D, textures);
 	
