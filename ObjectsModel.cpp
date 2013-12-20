@@ -8,18 +8,15 @@
 
 #include "ObjectsModel.h"
 
+//Constructor for Objects
 ObjectsModel::ObjectsModel()
 {
-//    point2D particlePoint;
-//    color objectColor;
-    
-
-        r = (rand() % (100 - 1) + 1);
-        r = r/100;
-        g = (rand() % (100 - 1) + 1);
-        g = r/100;
-        b = (rand() % (100 - 1) + 1);
-        b = r/100;
+    r = (rand() % (100 - 1) + 1);
+    r = r/100;
+    g = (rand() % (100 - 1) + 1);
+    g = r/100;
+    b = (rand() % (100 - 1) + 1);
+    b = r/100;
     
     translateX = (rand() % (400 - 1) + 1);//randomize position between 2.5 - -2.5
     translateX = (translateX - 250)/100;

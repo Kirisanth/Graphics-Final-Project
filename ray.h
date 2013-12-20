@@ -31,7 +31,6 @@ class ray{
     bool rayPlaneTest(int count, Walls wallObject);
     bool rayPlaneTest(int count, Flipper flipperObject);
     
-    
     float normalMultiplyDirection(int x, int y, std::vector<ObjectsModel> currentObject);
     float normalMultiplyDirection(int count, Walls wallObject);
     float normalMultiplyDirection(int count, Flipper flipperObject);
@@ -47,8 +46,6 @@ class ray{
     //ray casting for objects
     void Get3DPos(int x, int y, float winz, GLdouble point[3]);
     void rayCast(float x, float y, std::vector<ObjectsModel> currentObject);
-    
-    
 };
 
 #endif /* defined(__Graphics_Final_Project__ray__) */

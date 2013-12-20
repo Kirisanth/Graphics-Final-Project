@@ -13,15 +13,12 @@
 #include <stdlib.h>
 #include <GLUT/glut.h>
 
-//Model for the object (cube)
+//Model for the objects in game (cube, etc...)
 class ObjectsModel
 {
 public:
-//    point2D objectPoint;
-//    color objectColor;
     float objectSize;
-    //store positions of object
-    double posX, posY, posZ;
+    double posX, posY, posZ;//store positions of object
     float r, g, b;
     float scale;
     float pointsForNormal[6][3];
@@ -31,12 +28,14 @@ public:
     double min = -0.25, max  = 0.25;
     bool hit;
     int objectType = 1;
+    //constructor
+    ObjectsModel();
+    //methods
     void objectTranslateX(double x);
     void objectTranslateY(double y);
     void objectTranslateZ(double z);
     //cube vertices
 
-    //constructor
-    ObjectsModel();
+    
 };
 #endif /* defined(__Graphics_Final_Project__ObjectsModel__) */

@@ -23,36 +23,23 @@
 
 class PhysicsEngine {
     
-    //method
-    //TODO: Functions needed
-    //constructor
 public:
     //fields
     float time;
-    Particle ball = Particle();
-    //store particle
-    //stores all active objects
-    std::vector<ObjectsModel> ActiveObjects;
-    Walls pinballStruct;
-    Flipper flipperStruct;
+    Particle ball = Particle();//store particle
+    std::vector<ObjectsModel> ActiveObjects;//stores all active objects
+    Walls pinballStruct;//stores pinball machine walls
+    Flipper flipperStruct;//stores pinball flippers
     ray collision;
     Points points;
-    //movement gravity
     //constructor
     PhysicsEngine();
-    
-    bool groundPlane; //forst line test
-
     //methods
+    bool groundPlane; //forst line test
     void addObject();
-//    void moveParticle(Particle ball);
     void moveParticle();
-    //collision detection
-//    void collision(std::vector<Particle>& ball, std::vector<ObjectsModel>& vector);
-    void collisionTest();
+    void collisionTest();    //collision detection
     Vec3D CalculateBounceVector(double n1,double n2,double n3,double v1,double v2,double v3);
-    //
-    
 };
 
 

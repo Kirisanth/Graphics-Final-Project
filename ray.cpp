@@ -37,7 +37,6 @@ void ray::Get3DPos(int x, int y, float winz, GLdouble point[3])
     
 	//"un-project" the 2D point giving the 3D position corresponding to the provided depth (winz)
 	gluUnProject( (float)x, (float)(viewport[3]-y), winz, modelview, projection, viewport, &point[0], &point[1], &point[2]);
-    
 }
 
 void ray::normalizeDirection(){
@@ -47,7 +46,6 @@ void ray::normalizeDirection(){
     norm[0] = dir[0]/length *-1;
     norm[1] = dir[1]/length *-1;
     norm[2] = dir[2]/length *-1;
-    
 }
 
 //objects
@@ -65,11 +63,6 @@ double ray::distance(int count, Flipper flipperObject){
     return -1 * (flipperObject.pointsForNormal[count][0]* flipperObject.flipperNormal[count][0] + flipperObject.pointsForNormal[count][1]* flipperObject.flipperNormal[count][1] + flipperObject.pointsForNormal[count][2]* flipperObject.flipperNormal[count][2]);
 }
 
-
-
-
-
-
 //objects
 float ray::normalMultiplyDirection(int x, int y, std::vector<ObjectsModel> currentObject){
     return (currentObject.at(x).normal[y][0] *  norm[0] + currentObject.at(x).normal[y][1] * norm[1] + currentObject.at(x).normal[y][2] * norm[2]);
@@ -85,11 +78,6 @@ float ray::normalMultiplyDirection(int count, Flipper flipperObject){
         return (flipperObject.flipperNormal[count][0] *  norm[0] + flipperObject.flipperNormal[count][1] * norm[1] + flipperObject.flipperNormal[count][2] * norm[2]);
 }
 
-
-
-
-
-
 //for objects
 float ray::normalMultiplyOrgin(int x, int y, float t,std::vector<ObjectsModel> currentObject){
     return  (-1* (currentObject.at(x).normal[y][0] * org[0] + currentObject.at(x).normal[y][1] * org[1] + currentObject.at(x).normal[y][2] * org[2] + distance(x,y,currentObject)))/t;
@@ -104,13 +92,6 @@ float ray::normalMultiplyOrgin(int count, float t, Walls wallObject){
 float ray::normalMultiplyOrgin(int count, float t, Flipper flipperObject){
     return  (-1* (flipperObject.flipperNormal[count][0] * org[0] + flipperObject.flipperNormal[count][1] * org[1] + flipperObject.flipperNormal[count][2] * org[2] + distance(count, flipperObject)))/t;
 }
-
-
-
-
-
-
-
 
 ////Function performs a ray plan test to check if ray intersected object other then sphere
 //for objects
@@ -171,7 +152,3 @@ bool ray::rayPlaneTest(int count, Flipper flipperObject){
         return false;
     }
 }
-
-
-
-

@@ -12,11 +12,10 @@
 #include <iostream>
 #include <GLUT/glut.h>
 
+//Model for Walls of Pinball Machine
 class Walls
 {
 public:
-    //    point2D objectPoint;
-    //    color objectColor;
     float objectSize;
     //store positions of object
     double posX, posY, posZ;
@@ -24,10 +23,9 @@ public:
     double platformNormal[6][3] ={{-1,0,0},{1,0,0},{0,-1,0},{0,0,1},{0,0,-1}};
     double platformPoints[6][3] = {{-2.5,-0.7,2.5}, {2.5,4.7,0},{2.5,4.7,2.5},{2.5,4.7,0},{2.5,4.7,2.5}};
     
-    //cube vertices
-    
     //constructor
     Walls();
+    //method
     void RenderWalls();
 };
 

@@ -13,17 +13,15 @@
 #include <stdlib.h>
 #include <GLUT/glut.h>
 #include "MathLibrary.h"
-#include "Lighting.h"
 
 class Particle
 {
 public:
     //field properties
-    color particleColor;//store color properties of object
-    float particleSize;//store size property
+//    float particleSize;//store size property
     double posX, posY, posZ;//store positions of particle (center)
     double velX, velY, velZ;//store velocity of particles
-    Lighting light;
+
 
     //constructor
     Particle();
@@ -31,31 +29,8 @@ public:
     //methods
     void drawSphere();
     
-    void resetParticleProperties ();
-    void particleManipulation();
-    void updatePosition();
-    void resetParticlePosition();
-    
-    
-    //------------------------------------------------------
-    //TODO: DO WE NEED THIS
-    point2D particlePoint;
-    double speed = 0.018;//store speed of particle
-    
-    //store rotation angles of particles
-    int rotationX;
-    int rotationY;
-    int rotationZ;
-    
     //TODO: Move to PhysicsEngine
     double accX, accY, accZ;//store accerleration of particles
-    double friction;//store friction coeffecitent of particles
 
-    //TODO: Remove
-    int age;//store age of particle
-    bool rainMode = true, snowMode, normalMode = false;//particle type
-    void rainParticles();
-    void snowParticles();
-    void windFan();
 };
 #endif /* defined(__GC3AssignmentTwo__Particle__) */
