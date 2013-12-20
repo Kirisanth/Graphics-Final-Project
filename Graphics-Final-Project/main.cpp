@@ -182,12 +182,16 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     
     
     if(drawWall1First == true){//Created to make sure wall 1 is seen if wall 2 is transparent
+        glEnable(GL_COLOR_MATERIAL);
         drawWall1();
         drawWall2();
+        glDisable(GL_COLOR_MATERIAL);
     }
     else{
+        glEnable(GL_COLOR_MATERIAL);
         drawWall2();
         drawWall1();
+        glDisable(GL_COLOR_MATERIAL);
     }
 
 	glEnd();
@@ -216,6 +220,83 @@ void drawAxis()
 }
 
 
+
+void light2()
+{
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
+    //    GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+    //    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glShadeModel (GL_SMOOTH);
+    
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    //    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    
+    //    glEnable(GL_LIGHTING);
+    //    glEnable(GL_LIGHT0);
+    
+}
+
+void light3()
+{
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
+    //    GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glShadeModel (GL_SMOOTH);
+    
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+}
+
+
+void light()
+{
+    //    glPushMatrix();
+    //LIGHTING CODE
+    //    glRotatef(ang, 0, 1, 0);
+    //    glTranslatef(2, 1, 0);
+    
+    GLfloat position[] = { static_cast<GLfloat>(game.ball.posX), static_cast<GLfloat>(game.ball.posX), static_cast<GLfloat>(game.ball.posX), 1.0 };
+    float amb[4] = {1.0, 1, 1, 1};
+	float diff[4] = {1,0,0, 1};
+	float spec[4] = {0,0,1, 1};
+    
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, spec);
+    glLightfv (GL_LIGHT0, GL_POSITION, position);
+    
+    
+    GLfloat position2[] = {0 , 4.5, 0, 1.0};
+//    float amb2[4] = {0, 1, 1, 1};
+	float diff2[4] = {0,0,0, 1};
+//	float spec2[4] = {0,0,0, 0};
+    
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff2);
+    //	glLightfv(GL_LIGHT1, GL_AMBIENT, amb2);
+    //	glLightfv(GL_LIGHT1, GL_SPECULAR, spec2);
+    glLightfv (GL_LIGHT1, GL_POSITION, position2);
+    
+    float m_amb[] = {0.33, 0.22, 0.03, 1.0};
+	float m_dif[] = {0.78, 0.57, 0.11, 1.0};
+	float m_spec[] = {0.99, 0.91, 0.81, 1.0};
+	float shiny = 27; //10, 100
+    
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, m_amb);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_dif);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
+    //    glutSolidSphere(0.1, 10, 10);
+    //    glPopMatrix();
+}
+
+
+
+
+
+
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -229,7 +310,7 @@ void display(void)
     glPushMatrix();
     
     //for first person camera
-    
+    light2();
     if (cameraParticlePosition == true){
         glRotatef(45, 1, 0, 0);
         glTranslatef(-game.ball.posX, 12.5 - game.ball.posY, -game.ball.posZ);
@@ -259,6 +340,7 @@ void display(void)
         
     }
     game.points.dispalyPoints();
+    light();
     game.ball.drawSphere();
     
 //    game.flipperStruct.movFlip1 = movFlip1;
@@ -523,6 +605,9 @@ int main(int argc, char** argv)
 	glutIdleFunc(idle);
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
 	glLoadIdentity();
 	gluPerspective(90, 1, 1, 100);
 
