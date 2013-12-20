@@ -51,22 +51,20 @@ void Get3DPos(int x, int y, float winz, GLdouble point[3])
     
 }
 
-//
 ///* rayCast - takes a mouse x,y, coordinate, and casts a ray through that point
 // *   for subsequent intersection tests with objects.
 // */
 void rayCast(float x, float y)
-
 {
     bool groundPlane = true;//check if hit on plane
     GLdouble pNear[3];//depth for z
     GLdouble pFar[3]; //depth for z
     float inter[3];//stores object intersection
     //count through number of objects to perform tests on each one
-        //count through number of planes of each object to perform test on each one
-        for (int count1 = 0; count1 < game.ActiveObjects.size(); count1++){
-            for(int count2 = 0; count2 < 6; count2++){
-            
+    //count through number of planes of each object to perform test on each one
+    for (int count1 = 0; count1 < game.ActiveObjects.size(); count1++){
+        for(int count2 = 0; count2 < 6; count2++){
+        
             Get3DPos(x, y, 0.0, pNear);
             Get3DPos(x, y, 1.0, pFar);
             
@@ -83,36 +81,30 @@ void rayCast(float x, float y)
             newRay.normalizeDirection();
             
             groundPlane = newRay.rayPlaneTest(count1, count2, game.ActiveObjects);
-            //printf("x = %f, y = %f, z = %f",newRay.objectPos[0], newRay.objectPos[1], newRay.objectPos[2]);
-            
             //update the position of the object to the intersection point
-            	//update the position of the object to the intersection point
-                if ( groundPlane == true){
-                    //printf("x = %f, y = %f, z = %f",newRay.inter[0], newRay.inter[1], newRay.inter[2]);
-                    //check if object is hit between min and max bounds
-                    if ((game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateX < newRay.inter[0] && newRay.inter[0] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateX && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateZ < newRay.inter[2] && newRay.inter[2] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateZ && inter[1] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateY && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateY < newRay.inter[1])){
-                        
-                        game.ActiveObjects.at(count1).hit = true;
-                        //check to see right click to delete object
-                        break;
-                    }
-                    //return false hit else wise
-                    else{
-                        game.ActiveObjects.at(count1).hit = false;
-                    }
+            if ( groundPlane == true){
+                //check if object is hit between min and max bounds
+                if ((game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateX < newRay.inter[0] && newRay.inter[0] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateX && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateZ < newRay.inter[2] && newRay.inter[2] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateZ && inter[1] < game.ActiveObjects.at(count1).max + game.ActiveObjects.at(count1).translateY && game.ActiveObjects.at(count1).min + game.ActiveObjects.at(count1).translateY < newRay.inter[1])){
                     
-                    
+                    game.ActiveObjects.at(count1).hit = true;
+                    //check to see right click to delete object
+                    break;
                 }
-            }   //break out of cycle of object 
-            if(game.ActiveObjects.at(count1).hit == true){
-                for(int z = 0; z < game.ActiveObjects.size(); z++){
-                    if(z != count1){
-                        game.ActiveObjects.at(z).hit = false;
-                    }
+                //return false hit else wise
+                else{
+                    game.ActiveObjects.at(count1).hit = false;
                 }
-                break;
             }
+        }   //break out of cycle of object
+        if(game.ActiveObjects.at(count1).hit == true){
+            for(int z = 0; z < game.ActiveObjects.size(); z++){
+                if(z != count1){
+                    game.ActiveObjects.at(z).hit = false;
+                }
+            }
+            break;
         }
+    }
 }
 
 void drawWall1(){
@@ -135,15 +127,11 @@ void drawWall2(){
     glEnd();
 }
 
-
 /*
  Section is used to update the new particle position. Update is called constantly as per idle function.
  With this it constatly redraws it giving it a smooth animation.
  */
-
 void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
-    
-
     glBegin(GL_QUADS);
     
     glEnable(GL_BLEND); //Enable blending.
@@ -169,7 +157,6 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     glVertex3f(-2.5,-0.7,0);
     glVertex3f(-0.4,movFlip2,0);
     
-    
     //back
     glColor3f(0.3, 0.3, 0.3);
     glVertex3f(2.5,-0.7,0);
@@ -187,8 +174,6 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     }
 
 	glEnd();
-    
-    
 }
 
 /* drawAxis() -- draws an axis at the origin of the coordinate system
@@ -211,47 +196,10 @@ void drawAxis()
 	glEnd();
 }
 
-
-
-void light2()
-{
-    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_shininess[] = { 50.0 };
-    //    GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-    //    glClearColor (0.0, 0.0, 0.0, 0.0);
-    glShadeModel (GL_SMOOTH);
-    
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-    //    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    
-    //    glEnable(GL_LIGHTING);
-    //    glEnable(GL_LIGHT0);
-    
-}
-
-void light3()
-{
-    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_shininess[] = { 50.0 };
-    //    GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-    glClearColor (0.0, 0.0, 0.0, 0.0);
-    glShadeModel (GL_SMOOTH);
-    
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-}
-
-
 void light()
 {
-    //    glPushMatrix();
-    //LIGHTING CODE
-    //    glRotatef(ang, 0, 1, 0);
-    //    glTranslatef(2, 1, 0);
-    
     GLfloat position[] = { static_cast<GLfloat>(game.ball.posX), static_cast<GLfloat>(game.ball.posX), static_cast<GLfloat>(game.ball.posX), 1.0 };
-//    float amb[4] = {1.0, 1, 1, 1};
+//  float amb[4] = {1.0, 1, 1, 1};
 //	float diff[4] = {1,0,0, 1};
 	float spec[4] = {0,0,1, 1};
     
@@ -261,10 +209,10 @@ void light()
     glLightfv (GL_LIGHT0, GL_POSITION, position);
     
     
-    GLfloat position2[] = {0 , 4.5, 0, 1.0};
-    float amb2[4] = {0, 1, 1, 1};
-	float diff2[4] = {0,0,0, 1};
-	float spec2[4] = {0,0,0, 0};
+    GLfloat position2[] = {0,4.5,0,1.0};
+    float amb2[4] = {0,1,1,1};
+	float diff2[4] = {0,0,0,1};
+	float spec2[4] = {0,0,0,0};
     
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff2);
 	glLightfv(GL_LIGHT1, GL_AMBIENT, amb2);
@@ -280,14 +228,7 @@ void light()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, m_dif);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, m_spec);
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shiny);
-    //    glutSolidSphere(0.1, 10, 10);
-    //    glPopMatrix();
 }
-
-
-
-
-
 
 void display(void)
 {
@@ -302,7 +243,6 @@ void display(void)
     glPushMatrix();
     
     //for first person camera
-    light2();
     if (cameraParticlePosition == true){
         glRotatef(45, 1, 0, 0);
         glTranslatef(-game.ball.posX, 12.5 - game.ball.posY, -game.ball.posZ);
@@ -335,17 +275,7 @@ void display(void)
     light();
     game.ball.drawSphere();
     
-//    game.flipperStruct.movFlip1 = movFlip1;
-//    std::cout << movFlip1;
-//    game.flipperStruct.movFlip2 = movFlip2;
-//    game.flipperStruct.RenderFlippers();
-    
-    
     if (flip1 == true || flip2 == true){//Check to see if user pressed flipper button a or s
-            //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            //x++;//x is used to iterate over moving the flipper up then back down
-        
-        //pinballStruct(moveY, moveY, drawWall1First);
 
             if(flip1 == true && flip2 == true)//check if both buttons have been pressed a and s
             {
@@ -359,21 +289,14 @@ void display(void)
                 game.flipperStruct.movFlip1 = moveY;
                 game.flipperStruct.CalculateNormal();
 
-//            std::cout << game.flipperStruct.flipperNormal[0][0] << ",";
-//            std::cout << game.flipperStruct.flipperNormal[0][1] << ",";
-//            std::cout << game.flipperStruct.flipperNormal[0][2] << ",|,\n";
                 pinballStruct(moveY,-2,drawWall1First);//make s flipper move
             }
             else//else a is pressed
             {
-//                game.flipperStruct.movFlip2 = moveY;
                 game.flipperStruct.setUpdatedYValue1(moveY);
                 game.flipperStruct.CalculateNormal();
                 pinballStruct(-2,moveY,drawWall1First);//make a flipper move
             }
-            //glutSwapBuffers();
-        //}
-
     }
     else{
         pinballStruct(-2,-2,drawWall1First);
@@ -383,11 +306,13 @@ void display(void)
     if(gameOver == true){
         game.points.gameOver();
     }
+    
     glFlush();
     glutSwapBuffers();
     glutPostRedisplay();
 }
 
+//Keyboard handler function
 void kbd(unsigned char key, int x, int y)
 {
     y = 500 - y;
@@ -552,7 +477,6 @@ void update(int value){
     
     if (flip1 == true || flip2 == true){
         x++;//x is used to iterate over moving the flipper up then back down
-        printf("%d",x);
         if (x < 13){//increment by 0.1 to move flipper up. When x reaches 12, it'll reach its maximum which is -0.4
             moveY = moveY + 0.1;
             game.flipperStruct.movFlip1 = moveY;
@@ -609,7 +533,6 @@ static void init(void)
     printf("Welcome to 3GC3 Pinball \n \n How to play:\n Press 'a' and 's' to move the left and right paddle to hit the ball. The object of the game is to score as many points as possible by hitting objects before the ball falls.\n You can change the view by rotating the camera around the y axis to see the objects in it's z space. As well, press 8 to change over to pinball perspective and 9 to change back to regular perspective.\n\nThere are many more commands down below to enhance the 3D pinball expierence! \n \n Functions: \n \n a - move left flipper \n s - move right flipper \n arrow keys - move camera around y axis and x \n 8 - change camera to Pinball's perspective \n 9 - change camera to regular perspective \n mouse click - click on a object to select it \n 1 - change object to cube (object must be selected) \n 2 - change object to sphere (object must be selected) \n 3 - change object to ring (object must be selected) \n x and shift x - translate object along x axis (must be selected) \n y and shift y - translate object along y axis (must be selected) \n z and shift z - translate object along z axis (must be selected) \n space - start/stop animation \n r - restart game \n l - turn off/on lighting \n q or esc - quit program\n\n");
     
 }
-
 
 int main(int argc, char** argv)
 {

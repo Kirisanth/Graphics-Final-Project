@@ -84,7 +84,6 @@ void PhysicsEngine::collisionTest()
                 collision.objectPos[0] = collision.inter[0];
                 collision.objectPos[1] = collision.inter[1];
                 collision.objectPos[2] = collision.inter[2];
-                //printf("\nOC: %f, %f, %f\n", objectPos[0],objectPos[1],objectPos[2]);
                 //check if object is hit between min and max bounds
                 float t1 = collision.inter[0] - ball.posX;
                 float t2 = collision.inter[1] - ball.posY;

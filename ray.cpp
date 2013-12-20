@@ -99,7 +99,6 @@ bool ray::rayPlaneTest(int x, int y, std::vector<ObjectsModel> currentObject){
     float t = 0;
     normalMultiplyDirection(x,y,currentObject);
     t = (currentObject.at(x).normal[y][0] *  norm[0] + currentObject.at(x).normal[y][1] * norm[1] + currentObject.at(x).normal[y][2] * norm[2]);
-    //printf("%f",currentObject.at(x).normal[y][0]);
     if (t != 0){
         t = normalMultiplyOrgin(x,y,t, currentObject);
         //store instesection points if it did
@@ -112,7 +111,6 @@ bool ray::rayPlaneTest(int x, int y, std::vector<ObjectsModel> currentObject){
     else {
         return false;
     }
-    
 }
 
 //for platform 
