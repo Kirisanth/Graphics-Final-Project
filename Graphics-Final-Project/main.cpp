@@ -162,21 +162,17 @@ void pinballStruct(float movFlip1, float movFlip2, bool drawWall1First){
     glVertex3f(-2.5,4.7,0);
     
     //flippers
-//    glColor3f(0.3, 0, 1);
-//    glVertex3f(0.4,movFlip1,2.5);
-//    glVertex3f(2.5,-0.7,2.5);
-//    glVertex3f(2.5,-0.7,0);
-//    glVertex3f(0.4,movFlip1,0);
-//    
-//    glColor3f(0.3, 0, 1);
-//    glVertex3f(-0.4,movFlip2,2.5);
-//    glVertex3f(-2.5,-0.7,2.5);
-//    glVertex3f(-2.5,-0.7,0);
-//    glVertex3f(-0.4,movFlip2,0);
-    game.flipperStruct.movFlip1 = movFlip1;
-    std::cout << movFlip1;
-    game.flipperStruct.movFlip2 = movFlip2;
-    game.flipperStruct.RenderFlippers();
+    glColor3f(0.3, 0, 1);
+    glVertex3f(0.4,movFlip1,2.5);
+    glVertex3f(2.5,-0.7,2.5);
+    glVertex3f(2.5,-0.7,0);
+    glVertex3f(0.4,movFlip1,0);
+    
+    glColor3f(0.3, 0, 1);
+    glVertex3f(-0.4,movFlip2,2.5);
+    glVertex3f(-2.5,-0.7,2.5);
+    glVertex3f(-2.5,-0.7,0);
+    glVertex3f(-0.4,movFlip2,0);
     
     //back
     glColor3f(0.3, 0.3, 0.3);
@@ -282,17 +278,25 @@ void display(void)
     game.points.dispalyPoints();
     game.ball.drawSphere();
     
+//    game.flipperStruct.movFlip1 = movFlip1;
+//    std::cout << movFlip1;
+//    game.flipperStruct.movFlip2 = movFlip2;
+//    game.flipperStruct.RenderFlippers();
     
     
     if (flip1 == true || flip2 == true){//Check to see if user pressed flipper button a or s
             //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             x++;//x is used to iterate over moving the flipper up then back down
         
-        pinballStruct(moveY, moveY, drawWall1First);
-            if (x < 13)//increment by 0.1 to move flipper up. When x reaches 12, it'll reach its maximum which is -0.4
+        //pinballStruct(moveY, moveY, drawWall1First);
+        if (x < 13){//increment by 0.1 to move flipper up. When x reaches 12, it'll reach its maximum which is -0.4
                 moveY = moveY + 0.1;
-            else//decrease by 0.1 to move flipper down
+                game.flipperStruct.movFlip1 = moveY;
+        }
+        else{//decrease by 0.1 to move flipper down
                 moveY = moveY - 0.1;
+                game.flipperStruct.movFlip1 = moveY;
+        }
             if(flip1 == true && flip2 == true)//check if both buttons have been pressed a and s
                 pinballStruct(moveY,moveY,drawWall1First);//make both flippers move
             else if (flip1 == true)//check if s is pressed
